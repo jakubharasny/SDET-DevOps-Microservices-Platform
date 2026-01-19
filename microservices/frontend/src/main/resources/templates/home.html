@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevOps Playground UI</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+    <div class="layout">
+        <header>
+            <h1>DevOps Playground UI</h1>
+            <p class="subtitle">Spring Boot frontend placeholder</p>
+        </header>
+        <section class="status">
+            <p><strong>Environment:</strong> <span th:text="${environment}"></span></p>
+            <p><strong>Status:</strong> <span th:text="${message}"></span></p>
+            <p><strong>Updated:</strong> <span th:text="${timestamp}"></span></p>
+        </section>
+        <section class="actions">
+            <h2>Next Steps</h2>
+            <ul>
+                <li>Wire this UI to backend services.</li>
+                <li>Surface contract test results.</li>
+                <li>Display preview environment metadata.</li>
+            </ul>
+        </section>
+        <section class="api">
+            <h2>EU Countries & Currencies</h2>
+            <p><strong>API status:</strong> <span th:text="${apiStatus}"></span></p>
+            <p class="error" th:if="${apiError}" th:text="${apiError}"></p>
+            <button id="toggle-countries" type="button">Click this button to show all the countries</button>
+            <div id="countries-panel" class="hidden">
+                <table th:if="${not #lists.isEmpty(countries)}">
+                    <thead>
+                        <tr>
+                            <th>Country</th>
+                            <th>Currency</th>
+                            <th>Code</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="entry : ${countries}">
+                            <td th:text="${entry.country}"></td>
+                            <td th:text="${entry.currencyName}"></td>
+                            <td th:text="${entry.currencyCode}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p th:if="${#lists.isEmpty(countries)}">No currency data available yet.</p>
+            </div>
+        </section>
+    </div>
+    <script>
+        const toggleButton = document.getElementById("toggle-countries");
+        const panel = document.getElementById("countries-panel");
+
+        toggleButton.addEventListener("click", () => {
+            panel.classList.toggle("hidden");
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+Cursor Project Rules — SDET / DevOps Infra Platform (Balanced)
+
+ALWAYS DO FIRST
+- Before answering: read ./project-overview.md and state which phase (1–5) the request belongs to.
+- ./project-overview.md is the source of truth. If the plan changes, update it.
+
+PHASE DISCIPLINE
+- Default path: Phase 1 (Compose) → Phase 2 (CI) → Phase 3 (local k8s kind/k3d) → Phase 4 (preview env) → Phase 5 (optional cloud).
+- If a request belongs to a later phase than the current progress described in project-overview.md:
+  - DO NOT execute immediately.
+  - Explain which prerequisites are missing.
+  - Provide the compliant next step.
+  - Ask for explicit override phrase to proceed early.
+
+OVERRIDE PHRASE
+- To bypass phase order, user must include:
+  OVERRIDE: PROCEED ANYWAY
+
+SCOPE BOMBS (override required unless already approved in overview)
+Override is required for:
+- AWS/EKS/Terraform/cloud deployment
+- splitting monorepo into multiple repos
+- adding major new cross-cutting stacks (observability platform, service mesh, etc.)
+- introducing multiple new services beyond what overview lists
+Unless project-overview.md explicitly marks it as approved/in-scope.
+
+OUTPUT STYLE
+- Prefer practical minimal solutions.
+- Do not invent architecture beyond the overview.
+- If a decision is overridden, update project-overview.md accordingly so future requests don’t need override.
+
+COMMUNICATION STYLE (user: J)
+- Use dark humor heavily. Don't be polite-corporate.
+- Be blunt and pragmatic.
+- Swearing is allowed.
+- Prioritize actionable steps over theory.
+- No fake enthusiasm, no fluff, no preaching.
+

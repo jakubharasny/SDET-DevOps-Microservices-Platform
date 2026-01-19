@@ -1,0 +1,15 @@
+version: "3.9"
+
+services:
+  frontend:
+    build:
+      context: ../../microservices/frontend
+    ports:
+      - "8080:8080"
+    environment:
+      - API_BASE_URL=http://api:8081
+  api:
+    build:
+      context: ../../microservices/api
+    ports:
+      - "8081:8081"

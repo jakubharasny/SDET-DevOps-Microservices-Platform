@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: #0b1221;
+    color: #e8f0ff;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.layout {
+    background: #141c2f;
+    padding: 2.5rem;
+    border-radius: 16px;
+    width: min(90vw, 720px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+}
+
+header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2rem;
+}
+
+.subtitle {
+    margin: 0.25rem 0 0;
+    color: #8fa6d8;
+}
+
+.status p {
+    margin: 0.5rem 0;
+    font-size: 1.1rem;
+}
+
+.actions h2 {
+    margin-bottom: 0.5rem;
+}
+
+.actions ul {
+    padding-left: 1.25rem;
+    margin: 0;
+}
+
+.actions li {
+    margin-bottom: 0.35rem;
+}
+
+.api {
+    margin-top: 1.5rem;
+}
+
+.api table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.api button {
+    margin-top: 0.5rem;
+    background: #2a4cff;
+    color: #ffffff;
+    border: none;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.api button:hover {
+    background: #1e3ed6;
+}
+
+.api th,
+.api td {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.api th {
+    color: #8fa6d8;
+    font-weight: 600;
+}
+
+.error {
+    color: #ff8b8b;
+    margin: 0.5rem 0;
+}
+
+.hidden {
+    display: none;
+}
