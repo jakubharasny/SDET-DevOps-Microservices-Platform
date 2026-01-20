@@ -28,6 +28,7 @@ End-to-end (requires both services running):
 ```
 cd tests/e2e
 npm install
+npx playwright install
 npm test
 ```
 

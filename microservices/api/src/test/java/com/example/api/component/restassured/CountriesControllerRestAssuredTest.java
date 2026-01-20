@@ -16,12 +16,6 @@ class CountriesControllerRestAssuredTest {
     @LocalServerPort
     private int port;
 
-    @BeforeEach
-    void setUp() {
-        RestAssured.baseURI = "http://localhost";
-        RestAssured.port = port;
-    }
-
     @Test
     void returnsCountryCurrencyList() {
         given()
@@ -32,5 +26,11 @@ class CountriesControllerRestAssuredTest {
                 .body("$", hasSize(27))
                 .body("[0].country", equalTo("Austria"))
                 .body("[0].currencyCode", equalTo("EUR"));
+    }
+
+    @BeforeEach
+    void setUp() {
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = port;
     }
 }
