@@ -1,8 +1,9 @@
 package com.example.api.component.mockmvc;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -28,12 +29,16 @@ class OpenApiSchemaMockMvcTest {
                 .andReturn();
 
         String schema = result.getResponse().getContentAsString();
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode schemaJson = mapper.readTree(schema);
+        String prettySchema = mapper.writerWithDefaultPrettyPrinter()
+                .writeValueAsString(schemaJson);
 
         assertThat(schema).isNotBlank();
         assertThat(schema).contains("\"/api/countries\"");
 
         Path outputPath = Path.of("..", "..", "docs", "openapi", "api.json");
         Files.createDirectories(outputPath.getParent());
-        Files.writeString(outputPath, schema);
+        Files.writeString(outputPath, prettySchema + System.lineSeparator());
     }
 }
