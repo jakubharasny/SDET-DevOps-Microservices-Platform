@@ -56,3 +56,11 @@ npm install
 npx playwright install
 npm test
 ```
+
+## Git hooks (lint before push)
+This repo includes a pre-push hook that validates formatting of the OpenAPI
+schema. Enable it once per clone:
+
+```
+git config core.hooksPath .githooks
+```
