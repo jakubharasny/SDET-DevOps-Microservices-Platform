@@ -53,5 +53,6 @@ End-to-end (Playwright):
 ```
 cd tests/e2e
 npm install
+npx playwright install
 npm test
 ```
