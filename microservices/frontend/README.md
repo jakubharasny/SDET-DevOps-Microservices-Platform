@@ -16,5 +16,4 @@ mvn test
 
 ## Notes
 - Component tests live under `src/test/java/com/example/frontend/component`
-- Integration tests live under `src/test/java/com/example/frontend/integration`
 - Unit tests live under `src/test/java/com/example/frontend/unit`

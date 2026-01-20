@@ -5,3 +5,6 @@
 **/.project
 **/.settings/
 *.log
+node_modules/
+playwright-report/
+.playwright/

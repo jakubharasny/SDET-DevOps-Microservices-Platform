@@ -6,7 +6,7 @@
     <title>DevOps Playground UI</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
-<body>
+<body th:attr="data-api-base-url=${apiBaseUrl}">
     <div class="layout">
         <header>
             <h1>DevOps Playground UI</h1>
@@ -27,11 +27,36 @@
         </section>
         <section class="api">
             <h2>EU Countries & Currencies</h2>
-            <p><strong>API status:</strong> <span th:text="${apiStatus}"></span></p>
-            <p class="error" th:if="${apiError}" th:text="${apiError}"></p>
+            <p><strong>API status:</strong> <span id="api-status">idle</span></p>
+            <p class="error hidden" id="api-error"></p>
             <button id="toggle-countries" type="button">Click this button to show all the countries</button>
-            <div id="countries-panel" class="hidden">
-                <table th:if="${not #lists.isEmpty(countries)}">
+            <div id="countries-panel" class="hidden"></div>
+        </section>
+    </div>
+    <script>
+        const toggleButton = document.getElementById("toggle-countries");
+        const panel = document.getElementById("countries-panel");
+        const statusEl = document.getElementById("api-status");
+        const errorEl = document.getElementById("api-error");
+        const apiBaseUrl = document.body.dataset.apiBaseUrl;
+        let loaded = false;
+
+        const renderTable = (countries) => {
+            if (!countries.length) {
+                panel.innerHTML = "<p>No currency data available yet.</p>";
+                return;
+            }
+
+            const rows = countries.map((entry) => `
+                <tr>
+                    <td>${entry.country}</td>
+                    <td>${entry.currencyName}</td>
+                    <td>${entry.currencyCode}</td>
+                </tr>
+            `).join("");
+
+            panel.innerHTML = `
+                <table>
                     <thead>
                         <tr>
                             <th>Country</th>
@@ -39,24 +64,39 @@
                             <th>Code</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr th:each="entry : ${countries}">
-                            <td th:text="${entry.country}"></td>
-                            <td th:text="${entry.currencyName}"></td>
-                            <td th:text="${entry.currencyCode}"></td>
-                        </tr>
-                    </tbody>
+                    <tbody>${rows}</tbody>
                 </table>
-                <p th:if="${#lists.isEmpty(countries)}">No currency data available yet.</p>
-            </div>
-        </section>
-    </div>
-    <script>
-        const toggleButton = document.getElementById("toggle-countries");
-        const panel = document.getElementById("countries-panel");
+            `;
+        };
 
-        toggleButton.addEventListener("click", () => {
-            panel.classList.toggle("hidden");
+        const setError = (message) => {
+            errorEl.textContent = message;
+            errorEl.classList.remove("hidden");
+        };
+
+        toggleButton.addEventListener("click", async () => {
+            if (loaded) {
+                panel.classList.toggle("hidden");
+                return;
+            }
+
+            statusEl.textContent = "loading";
+            errorEl.classList.add("hidden");
+
+            try {
+                const response = await fetch(`${apiBaseUrl}/api/countries`);
+                if (!response.ok) {
+                    throw new Error(`API returned ${response.status}`);
+                }
+                const countries = await response.json();
+                renderTable(countries);
+                statusEl.textContent = "ok";
+                panel.classList.remove("hidden");
+                loaded = true;
+            } catch (error) {
+                statusEl.textContent = "error";
+                setError(`API request failed: ${error.message}`);
+            }
         });
     </script>
 </body>

@@ -10,7 +10,7 @@ Monorepo for a small microservices system plus a realistic DevOps/SDET delivery 
 ```
 docker compose -f deploy/compose/docker-compose.yml up --build
 ```
-
+https://github.com/jakubharasny/SDET-DevOps-Microservices-Platform.git
 Endpoints:
 - Frontend UI: `http://localhost:8080/`
 - Frontend health: `http://localhost:8080/actuator/health`
@@ -22,6 +22,13 @@ Run tests per service:
 ```
 cd microservices/api && mvn test
 cd microservices/frontend && mvn test
+```
+
+End-to-end (requires both services running):
+```
+cd tests/e2e
+npm install
+npm test
 ```
 
 ## Docs

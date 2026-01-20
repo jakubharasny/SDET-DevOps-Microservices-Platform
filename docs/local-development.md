@@ -42,10 +42,16 @@ Testing layout (Phase 1):
   - Rest Assured (service-level): microservices/api/src/test/java/com/example/api/component/restassured
   - MockMvc: microservices/frontend/src/test/java/com/example/frontend/component/mockmvc
   - HTTP/TestRestTemplate: microservices/frontend/src/test/java/com/example/frontend/component/http
-- Integration tests (cross-service) live under:
-  - microservices/frontend/src/test/java/com/example/frontend/integration
-- End-to-end tests will move to a top-level suite later.
+- End-to-end tests live under:
+  - tests/e2e
 
 API schema (OpenAPI):
 - Generated during API tests from `/v3/api-docs`.
 - Output file: `docs/openapi/api.json`
+
+End-to-end (Playwright):
+```
+cd tests/e2e
+npm install
+npm test
+```
