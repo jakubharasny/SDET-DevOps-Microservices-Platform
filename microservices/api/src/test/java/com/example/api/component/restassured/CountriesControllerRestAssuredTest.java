@@ -1,29 +1,36 @@
 package com.example.api.component.restassured;
 
+import io.restassured.RestAssured;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.web.server.LocalServerPort;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class CountriesControllerRestAssuredTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+    @LocalServerPort
+    private int port;
 
     @Test
-    void returnsCountryCurrencyList() throws Exception {
-        mockMvc.perform(get("/api/countries"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(27)))
-                .andExpect(jsonPath("$[0].country").value("Austria"))
-                .andExpect(jsonPath("$[0].currencyCode").value("EUR"));
+    void returnsCountryCurrencyList() {
+        given()
+                .when()
+                .get("/api/countries")
+                .then()
+                .statusCode(200)
+                .body("$", hasSize(27))
+                .body("[0].country", equalTo("Austria"))
+                .body("[0].currencyCode", equalTo("EUR"));
+    }
+
+    @BeforeEach
+    void setUp() {
+        RestAssured.baseURI = "http://localhost";
+        RestAssured.port = port;
     }
 }

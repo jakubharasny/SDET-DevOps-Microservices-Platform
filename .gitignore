@@ -8,3 +8,4 @@
 node_modules/
 playwright-report/
 .playwright/
+tests/e2e/test-results/
