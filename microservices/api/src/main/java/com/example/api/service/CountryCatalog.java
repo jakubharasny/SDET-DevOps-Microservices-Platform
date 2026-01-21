@@ -13,20 +13,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class CountryCatalog {
 
-    private final List<CountryCurrency> countries;
+	private final List<CountryCurrency> countries;
 
-    public CountryCatalog(ObjectMapper objectMapper) throws IOException {
-        try (InputStream inputStream = new ClassPathResource("countries.json").getInputStream()) {
-            List<CountryCurrency> loaded = objectMapper.readValue(
-                    inputStream,
-                    new TypeReference<List<CountryCurrency>>() {
-                    }
-            );
-            this.countries = List.copyOf(loaded);
-        }
-    }
+	public CountryCatalog(ObjectMapper objectMapper) throws IOException {
+		try (InputStream inputStream = new ClassPathResource("countries.json").getInputStream()) {
+			List<CountryCurrency> loaded = objectMapper.readValue(inputStream,
+					new TypeReference<List<CountryCurrency>>() {
+					});
+			this.countries = List.copyOf(loaded);
+		}
+	}
 
-    public List<CountryCurrency> getCountries() {
-        return countries;
-    }
+	public List<CountryCurrency> getCountries() {
+		return countries;
+	}
 }

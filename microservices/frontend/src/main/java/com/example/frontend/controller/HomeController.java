@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.GetMapping; // maps HTTP GET requ
  */
 public class HomeController {
 
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM d, yyyy HH:mm");
-    private final String apiBaseUrl;
+	private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("MMM d, yyyy HH:mm");
+	private final String apiBaseUrl;
 
-    public HomeController(@Value("${api.base-url:http://localhost:8081}") String apiBaseUrl) {
-        this.apiBaseUrl = apiBaseUrl;
-    }
+	public HomeController(@Value("${api.base-url:http://localhost:8081}") String apiBaseUrl) {
+		this.apiBaseUrl = apiBaseUrl;
+	}
 
-    @GetMapping("/")
-    public String home(Model model) {
-        model.addAttribute("environment", "Preview");
-        model.addAttribute("message", "Ready to plug into the DevOps platform");
-        model.addAttribute("timestamp", LocalDateTime.now().format(FORMATTER));
-        model.addAttribute("apiBaseUrl", apiBaseUrl);
-        return "home";
-    }
+	@GetMapping("/")
+	public String home(Model model) {
+		model.addAttribute("environment", "Preview");
+		model.addAttribute("message", "Ready to plug into the DevOps platform");
+		model.addAttribute("timestamp", LocalDateTime.now().format(FORMATTER));
+		model.addAttribute("apiBaseUrl", apiBaseUrl);
+		return "home";
+	}
 }

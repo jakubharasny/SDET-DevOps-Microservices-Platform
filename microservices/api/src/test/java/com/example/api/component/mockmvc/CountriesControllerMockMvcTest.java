@@ -15,15 +15,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class CountriesControllerMockMvcTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    void returnsCountryCurrencyList() throws Exception {
-        mockMvc.perform(get("/api/countries"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(27)))
-                .andExpect(jsonPath("$[0].country").value("Austria"))
-                .andExpect(jsonPath("$[0].currencyCode").value("EUR"));
-    }
+	@Test
+	void returnsCountryCurrencyList() throws Exception {
+		mockMvc.perform(get("/api/countries")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(27)))
+				.andExpect(jsonPath("$[0].country").value("Austria"))
+				.andExpect(jsonPath("$[0].currencyCode").value("EUR"));
+	}
 }

@@ -13,20 +13,16 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class HealthEndpointTest {
 
-    @Autowired
-    private TestRestTemplate restTemplate;
+	@Autowired
+	private TestRestTemplate restTemplate;
 
-    @Test
-    void healthEndpointIsUp() {
-        ResponseEntity<java.util.Map<String, Object>> response = restTemplate.exchange(
-                "/actuator/health",
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<java.util.Map<String, Object>>() {
-                }
-        );
+	@Test
+	void healthEndpointIsUp() {
+		ResponseEntity<java.util.Map<String, Object>> response = restTemplate.exchange("/actuator/health",
+				HttpMethod.GET, null, new ParameterizedTypeReference<java.util.Map<String, Object>>() {
+				});
 
-        assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
-        assertThat(response.getBody()).isNotNull().containsEntry("status", "UP");
-    }
+		assertThat(response.getStatusCode().is2xxSuccessful()).isTrue();
+		assertThat(response.getBody()).isNotNull().containsEntry("status", "UP");
+	}
 }

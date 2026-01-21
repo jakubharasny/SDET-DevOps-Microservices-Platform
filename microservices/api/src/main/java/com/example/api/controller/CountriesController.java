@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CountriesController {
 
-    private final CountryCatalog countryCatalog;
+	private final CountryCatalog countryCatalog;
 
-    public CountriesController(CountryCatalog countryCatalog) {
-        this.countryCatalog = countryCatalog;
-    }
+	public CountriesController(CountryCatalog countryCatalog) {
+		this.countryCatalog = countryCatalog;
+	}
 
-    @GetMapping("/api/countries")
-    public List<CountryCurrency> countries() {
-        return countryCatalog.getCountries();
-    }
+	@GetMapping("/api/countries")
+	public List<CountryCurrency> countries() {
+		return countryCatalog.getCountries();
+	}
 }
