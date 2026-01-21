@@ -59,7 +59,7 @@ npm test
 
 ## Git hooks (lint before push)
 Hooks live inside each microservice and are triggered by a root pre-push hook.
-They auto-format OpenAPI output and run fast local tests for each service.
+They auto-format OpenAPI output, run fast local tests for each service, and lint Playwright tests.
 Enable it once per clone:
 
 ```

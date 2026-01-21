@@ -19,26 +19,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class OpenApiSchemaMockMvcTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    void writesOpenApiSchemaToTarget() throws Exception {
-        MvcResult result = mockMvc.perform(get("/v3/api-docs"))
-                .andExpect(status().isOk())
-                .andReturn();
+	@Test
+	void writesOpenApiSchemaToTarget() throws Exception {
+		MvcResult result = mockMvc.perform(get("/v3/api-docs")).andExpect(status().isOk()).andReturn();
 
-        String schema = result.getResponse().getContentAsString();
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode schemaJson = mapper.readTree(schema);
-        String prettySchema = mapper.writerWithDefaultPrettyPrinter()
-                .writeValueAsString(schemaJson);
+		String schema = result.getResponse().getContentAsString();
+		ObjectMapper mapper = new ObjectMapper();
+		JsonNode schemaJson = mapper.readTree(schema);
+		String prettySchema = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(schemaJson);
 
-        assertThat(schema).isNotBlank();
-        assertThat(schema).contains("\"/api/countries\"");
+		assertThat(schema).isNotBlank();
+		assertThat(schema).contains("\"/api/countries\"");
 
-        Path outputPath = Path.of("..", "..", "docs", "openapi", "api.json");
-        Files.createDirectories(outputPath.getParent());
-        Files.writeString(outputPath, prettySchema + System.lineSeparator());
-    }
+		Path outputPath = Path.of("..", "..", "docs", "openapi", "api.json");
+		Files.createDirectories(outputPath.getParent());
+		Files.writeString(outputPath, prettySchema + System.lineSeparator());
+	}
 }

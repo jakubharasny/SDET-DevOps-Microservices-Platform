@@ -15,18 +15,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class HomePageMockMvcTest {
 
-    @Autowired
-    private MockMvc mockMvc;
+	@Autowired
+	private MockMvc mockMvc;
 
-    @Test
-    void rendersButtonAndCountriesSection() throws Exception {
-        mockMvc.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(org.hamcrest.Matchers.containsString(
-                        "Click this button to show all the countries"
-                )))
-                .andExpect(content().string(org.hamcrest.Matchers.containsString(
-                        "countries-panel"
-                )));
-    }
+	@Test
+	void rendersButtonAndCountriesSection() throws Exception {
+		mockMvc.perform(get("/")).andExpect(status().isOk())
+				.andExpect(content()
+						.string(org.hamcrest.Matchers.containsString("Click this button to show all the countries")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("countries-panel")));
+	}
 }
