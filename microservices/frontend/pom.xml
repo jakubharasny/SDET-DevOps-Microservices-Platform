@@ -60,8 +60,10 @@
                         <googleJavaFormat>
                             <version>1.19.2</version>
                         </googleJavaFormat>
-                        <target>src/main/java/**/*.java</target>
-                        <target>src/test/java/**/*.java</target>
+                        <includes>
+                            <include>src/main/java/**/*.java</include>
+                            <include>src/test/java/**/*.java</include>
+                        </includes>
                     </java>
                 </configuration>
             </plugin>
