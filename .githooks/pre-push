@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-./scripts/lint.sh
+hooks=(
+  "microservices/api/.githooks/pre-push"
+  "microservices/frontend/.githooks/pre-push"
+)
+
+for hook in "${hooks[@]}"; do
+  if [[ -x "$hook" ]]; then
+    "$hook"
+  fi
+done

@@ -58,9 +58,11 @@ npm test
 ```
 
 ## Git hooks (lint before push)
-This repo includes a pre-push hook that validates formatting of the OpenAPI
-schema. Enable it once per clone:
+Hooks live inside each microservice and are triggered by a root pre-push hook.
+Enable it once per clone:
 
 ```
 git config core.hooksPath .githooks
 ```
+
+OpenAPI formatting helpers live under `microservices/api/scripts`.
