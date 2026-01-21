@@ -6,6 +6,7 @@ service_dir="$(cd "$script_dir/.." && pwd)"
 
 (
   cd "$service_dir"
+  mvn -q spotless:check
   mvn -q test
 )
 

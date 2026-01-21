@@ -4,6 +4,7 @@ set -euo pipefail
 hooks=(
   "microservices/api/.githooks/pre-push"
   "microservices/frontend/.githooks/pre-push"
+  "tests/e2e/.githooks/pre-push"
 )
 
 for hook in "${hooks[@]}"; do
