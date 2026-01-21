@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Placeholder for frontend-specific linting (ESLint/Prettier) once added.
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+service_dir="$(cd "$script_dir/.." && pwd)"
+
+(
+  cd "$service_dir"
+  mvn -q test
+)
