@@ -57,6 +57,9 @@ npx playwright install
 npm test
 ```
 
+## Local MySQL for SQL practice
+See `docs/local-database.md`.
+
 ## Git hooks (lint before push)
 Hooks live inside each microservice and are triggered by a root pre-push hook.
 They auto-format OpenAPI output, run fast local tests for each service, and lint Playwright tests.

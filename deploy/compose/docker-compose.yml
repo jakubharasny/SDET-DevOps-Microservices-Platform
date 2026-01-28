@@ -13,3 +13,22 @@ services:
       context: ../../microservices/api
     ports:
       - "8081:8081"
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: sdet_dev
+      MYSQL_USER: sdet
+      MYSQL_PASSWORD: sdetpass
+      MYSQL_ROOT_PASSWORD: rootpass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  mysql_data:

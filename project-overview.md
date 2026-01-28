@@ -175,6 +175,7 @@ Service rules
 
 Local dev
 - Docker Compose for running multi-service system locally
+- Local MySQL database for SQL practice (optional)
 
 CI/CD
 - GitHub Actions:
@@ -291,6 +292,7 @@ Current focus (Phase 1):
 
 Phase 1 additions (only when needed):
 - deploy/compose (Docker Compose files)
+- deploy/mysql (local MySQL schema + seed)
 - docs/ (local development docs, e.g. docs/local-development.md)
 
 
@@ -301,6 +303,12 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - microservices/
   - frontend/
   - api/
+- deploy/
+  - compose/
+  - mysql/
+- docs/
+  - local-development.md
+  - local-database.md
 - project-overview.md
 - .cursorrules
 
@@ -322,6 +330,7 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - OpenAPI schema generated during API tests (docs/openapi/api.json)
 - Test layout split into unit/component/integration folders
 - Playwright E2E test added (tests/e2e)
+- Local MySQL for SQL practice (schema + seed)
 - Phase 1 exit criteria met; Phase 2 started
 - Frontend calls API to render EU country currencies
 
