@@ -9,7 +9,6 @@ deploy/mysql/target/
 node_modules/
 playwright-report/
 .playwright/
-tests/e2e/test-results/
 tests/e2e/tests-practice/
 practice/
 sdet_dev.session.sql
