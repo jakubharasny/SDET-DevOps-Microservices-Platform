@@ -1,6 +1,7 @@
 .DS_Store
 .vscode/
 **/target/
+deploy/mysql/target/
 **/.classpath
 **/.project
 **/.settings/
