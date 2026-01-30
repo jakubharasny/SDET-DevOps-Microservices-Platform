@@ -1,8 +1,10 @@
 package com.example.mysql;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Types;
 import java.time.LocalDate;
 import java.util.Locale;
@@ -52,6 +54,14 @@ public class SeedUserRole {
                 VALUES
                     (?, ?, ?, ?, ?, ?, ?)
                 """;
+        String insertCreditSql = """
+                INSERT INTO UserCredit
+                    (UserRoleId, Name, CreditLimit, CurrencyCode, CardProvider, Created)
+                VALUES
+                    (?, ?, ?, ?, ?, ?)
+                """;
+        String[] currencies = {"USD", "EUR", "GBP", "CHF", "PLN"};
+        String[] providers = {"VISA", "MASTERCARD", "AMEX", "DISCOVER"};
 
         try (Connection connection = DriverManager.getConnection(jdbcUrl, user, password);
              PreparedStatement statement = connection.prepareStatement(insertSql)) {
@@ -102,6 +112,33 @@ public class SeedUserRole {
 
             // Insert all rows in one batch for speed.
             statement.executeBatch();
+
+            // After roles exist, seed a related credit table for join practice.
+            try (PreparedStatement selectRoles = connection.prepareStatement("SELECT Id, Name FROM UserRole");
+                 PreparedStatement creditStatement = connection.prepareStatement(insertCreditSql);
+                 ResultSet roles = selectRoles.executeQuery()) {
+                while (roles.next()) {
+                    long roleId = roles.getLong("Id");
+                    String roleName = roles.getString("Name");
+                    int creditRows = 1 + random.nextInt(3);
+                    for (int i = 0; i < creditRows; i++) {
+                        BigDecimal limit = BigDecimal.valueOf(500 + random.nextInt(9501))
+                                .add(BigDecimal.valueOf(random.nextInt(100), 2));
+                        String currency = currencies[random.nextInt(currencies.length)];
+                        String provider = providers[random.nextInt(providers.length)];
+                        LocalDate creditCreated = randomDate(startDate, today, random);
+
+                        creditStatement.setLong(1, roleId);
+                        creditStatement.setString(2, roleName);
+                        creditStatement.setBigDecimal(3, limit);
+                        creditStatement.setString(4, currency);
+                        creditStatement.setString(5, provider);
+                        creditStatement.setObject(6, creditCreated);
+                        creditStatement.addBatch();
+                    }
+                }
+                creditStatement.executeBatch();
+            }
         }
     }
 
