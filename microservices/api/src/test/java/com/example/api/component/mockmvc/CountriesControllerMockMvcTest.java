@@ -18,6 +18,7 @@ class CountriesControllerMockMvcTest {
 	@Autowired
 	private MockMvc mockMvc;
 
+	@SuppressWarnings("null")
 	@Test
 	void returnsCountryCurrencyList() throws Exception {
 		mockMvc.perform(get("/api/countries")).andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(27)))
