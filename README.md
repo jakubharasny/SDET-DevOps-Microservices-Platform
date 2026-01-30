@@ -24,12 +24,13 @@ cd microservices/api && mvn test
 cd microservices/frontend && mvn test
 ```
 
-End-to-end (requires both services running):
+End-to-end (Playwright Java, requires both services running):
 ```
-cd tests/e2e
-npm install
-npx playwright install
-npm test
+mvn -q -f tests/e2e-java/pom.xml exec:java \
+  -Dexec.mainClass=com.microsoft.playwright.CLI \
+  -Dexec.args="install"
+
+mvn -q -f tests/e2e-java/pom.xml test
 ```
 
 ## Docs

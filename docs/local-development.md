@@ -43,18 +43,19 @@ Testing layout (Phase 1):
   - MockMvc: microservices/frontend/src/test/java/com/example/frontend/component/mockmvc
   - HTTP/TestRestTemplate: microservices/frontend/src/test/java/com/example/frontend/component/http
 - End-to-end tests live under:
-  - tests/e2e
+  - tests/e2e-java
 
 API schema (OpenAPI):
 - Generated during API tests from `/v3/api-docs`.
 - Output file: `docs/openapi/api.json`
 
-End-to-end (Playwright):
+End-to-end (Playwright Java):
 ```
-cd tests/e2e
-npm install
-npx playwright install
-npm test
+mvn -q -f tests/e2e-java/pom.xml exec:java \
+  -Dexec.mainClass=com.microsoft.playwright.CLI \
+  -Dexec.args="install"
+
+mvn -q -f tests/e2e-java/pom.xml test
 ```
 
 ## Local MySQL for SQL practice
@@ -62,7 +63,7 @@ See `docs/local-database.md`.
 
 ## Git hooks (lint before push)
 Hooks live inside each microservice and are triggered by a root pre-push hook.
-They auto-format OpenAPI output, run fast local tests for each service, and lint Playwright tests.
+They auto-format OpenAPI output and run fast local tests for each service.
 Enable it once per clone:
 
 ```

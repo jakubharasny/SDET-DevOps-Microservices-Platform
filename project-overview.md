@@ -329,7 +329,7 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - Frontend renders countries table from API data
 - OpenAPI schema generated during API tests (docs/openapi/api.json)
 - Test layout split into unit/component/integration folders
-- Playwright E2E test added (tests/e2e)
+- Playwright E2E test added (tests/e2e-java)
 - Local MySQL for SQL practice (schema + seed)
 - Phase 1 exit criteria met; Phase 2 started
 - Frontend calls API to render EU country currencies
