@@ -2,10 +2,13 @@ package com.example.e2e;
 
 import com.microsoft.playwright.Browser;
 import com.microsoft.playwright.BrowserType;
+import com.microsoft.playwright.Locator;
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.Playwright;
 import org.junit.jupiter.api.Test;
 
+import static com.microsoft.playwright.options.AriaRole.CELL;
+import static com.microsoft.playwright.options.AriaRole.ROW;
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 class CountriesE2ETest {
@@ -23,8 +26,10 @@ class CountriesE2ETest {
                             new Page.GetByRoleOptions().setName("Click this button to show all the countries"))
                     .click();
 
-            assertThat(page.getByText("Austria")).isVisible();
-            assertThat(page.getByText("EUR")).isVisible();
+            Locator austriaRow = page.getByRole(ROW, new Page.GetByRoleOptions().setName("Austria Euro EUR"));
+            assertThat(austriaRow.getByRole(CELL, new Locator.GetByRoleOptions().setName("Austria"))).isVisible();
+            assertThat(austriaRow.getByRole(CELL, new Locator.GetByRoleOptions().setName("EUR").setExact(true)))
+                    .isVisible();
         }
     }
 }
