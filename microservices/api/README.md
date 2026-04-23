@@ -9,6 +9,10 @@ mvn spring-boot:run
 
 Then open `http://localhost:8081/api/countries`.
 
+Async query demo endpoints:
+- `POST /api/queries` with body `{ "message": "hello" }`
+- `GET /api/queries/{id}` to read status/result payload
+
 ## Run tests
 ```
 mvn test
