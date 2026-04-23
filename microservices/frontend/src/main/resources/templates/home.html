@@ -3,86 +3,152 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DevOps Playground UI</title>
+    <title>MeshOps Playground</title>
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body th:attr="data-api-base-url=${apiBaseUrl}">
-    <div class="background-glow background-glow-left"></div>
-    <div class="background-glow background-glow-right"></div>
-    <div class="layout">
-        <header>
-            <div class="brand">
-                <div class="logo-mark" aria-hidden="true">
-                    <span></span>
-                    <span></span>
-                    <span></span>
+    <div class="atmosphere atmosphere-left"></div>
+    <div class="atmosphere atmosphere-right"></div>
+    <div class="grid-overlay" aria-hidden="true"></div>
+
+    <main class="layout">
+        <header class="hero">
+            <div class="hero-content">
+                <p class="badge">Interactive Microservices Demo</p>
+                <div class="brandline">
+                    <svg width="220" height="52" viewBox="0 0 220 52" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="MeshOps logo" role="img">
+                        <defs>
+                            <linearGradient id="logoGrad" x1="0" y1="0" x2="52" y2="52" gradientUnits="userSpaceOnUse">
+                                <stop offset="0%" stop-color="#57E3FF"/>
+                                <stop offset="55%" stop-color="#5B8CFF"/>
+                                <stop offset="100%" stop-color="#9B6BFF"/>
+                            </linearGradient>
+                            <filter id="logoGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                <feGaussianBlur stdDeviation="3.2" result="blur"/>
+                                <feMerge>
+                                    <feMergeNode in="blur"/>
+                                    <feMergeNode in="SourceGraphic"/>
+                                </feMerge>
+                            </filter>
+                        </defs>
+
+                        <g transform="translate(4,6)" filter="url(#logoGlow)">
+                            <circle cx="18" cy="20" r="5" fill="#57E3FF"/>
+                            <circle cx="36" cy="9" r="4.5" fill="#5B8CFF"/>
+                            <circle cx="36" cy="31" r="4.5" fill="#9B6BFF"/>
+                            <circle cx="8" cy="9" r="3.5" fill="#7CF7C9"/>
+                            <circle cx="8" cy="31" r="3.5" fill="#7CF7C9"/>
+                            <path d="M18 20L36 9M18 20L36 31M18 20L8 9M18 20L8 31" stroke="url(#logoGrad)" stroke-width="2.4" stroke-linecap="round"/>
+                            <path d="M36 9H44.5" stroke="url(#logoGrad)" stroke-width="2.4" stroke-linecap="round"/>
+                            <path d="M36 31H44.5" stroke="url(#logoGrad)" stroke-width="2.4" stroke-linecap="round"/>
+                        </g>
+
+                        <g transform="translate(62,10)">
+                            <text x="0" y="16" fill="#EAF2FF" font-size="18" font-weight="700" font-family="Inter, Segoe UI, Arial, sans-serif">MeshOps</text>
+                            <text x="0" y="34" fill="#8EA3C7" font-size="11.5" font-weight="500" font-family="Inter, Segoe UI, Arial, sans-serif" letter-spacing="0.8">MICROSERVICES PLATFORM DEMO</text>
+                        </g>
+                    </svg>
                 </div>
-                <p class="eyebrow">Microservices Platform Demo</p>
+                <h1>Watch microservices talk, queue, and get things done</h1>
+                <p class="subtitle">
+                    This interactive demo shows how small services collaborate: request-response on one side,
+                    async event flow on the other.
+                </p>
+                <p class="helper">Click around. Break the calm. Watch the system respond.</p>
+                <p class="helper second-line">Explore how services connect, respond, and process work.</p>
+                <div class="hero-actions">
+                    <a class="cta" href="#demo-sync">Try Demo A</a>
+                    <a class="cta ghost" href="#demo-async">Try Demo B</a>
+                </div>
             </div>
-            <h1>Watch small services do real work</h1>
-            <p class="subtitle">
-                This page is the guided tour: frontend talks to API, API talks to other services,
-                and we pretend everything is calm while logs are having a dramatic moment.
-            </p>
+
+            <aside class="topology" aria-label="System topology">
+                <h2>Live Topology Snapshot</h2>
+                <p>Frontend -> API -> Kafka Topic -> Worker -> UI update</p>
+                <div class="topology-flow">
+                    <div class="node node-frontend">Frontend</div>
+                    <div class="link"></div>
+                    <div class="node node-api">API</div>
+                    <div class="link"></div>
+                    <div class="node node-kafka">Kafka Topic</div>
+                    <div class="link"></div>
+                    <div class="node node-worker">Worker</div>
+                    <div class="link"></div>
+                    <div class="node node-ui">UI Update</div>
+                </div>
+            </aside>
         </header>
 
-        <section class="intro-grid">
-            <article class="card">
-                <h2>1) Frontend</h2>
-                <p>
-                    You are here. This UI sends requests, displays results, and explains what is happening
-                    in plain language.
-                </p>
+        <section class="status-panel">
+            <p><strong>Environment</strong> <span class="chip chip-blue" th:text="${environment}"></span></p>
+            <p><strong>Status</strong> <span class="chip chip-green" th:text="${message}"></span></p>
+            <p><strong>Last updated</strong> <span class="chip chip-neutral" th:text="${timestamp}"></span></p>
+            <p><strong>Mode</strong> <span class="chip chip-cyan">Interactive Demo</span></p>
+            <p><strong>Architecture</strong> <span class="chip chip-violet">Sync + Async</span></p>
+        </section>
+
+        <section class="services" aria-label="Service roles">
+            <article class="service-card">
+                <p class="icon" aria-hidden="true">🖥️</p>
+                <h2>Frontend</h2>
+                <p class="role">The control panel</p>
+                <p>Where humans poke the system. Sends requests, shows results, and keeps everything understandable.</p>
+                <p class="why">Why it matters: translates distributed complexity into something clickable.</p>
             </article>
-            <article class="card">
-                <h2>2) API Service</h2>
-                <p>
-                    The backend API returns country/currency data and will accept async query requests for Kafka flow.
-                </p>
+            <article class="service-card">
+                <p class="icon" aria-hidden="true">🧭</p>
+                <h2>API Service</h2>
+                <p class="role">The traffic coordinator</p>
+                <p>Where requests get organised. Handles fast sync calls and prepares async work when needed.</p>
+                <p class="why">Why it matters: keeps flows predictable while the platform grows.</p>
             </article>
-            <article class="card">
-                <h2>3) Kafka Worker</h2>
-                <p>
-                    Separate microservice. It consumes messages and processes async jobs. Tiny service, real behavior.
-                </p>
+            <article class="service-card">
+                <p class="icon" aria-hidden="true">⚙️</p>
+                <h2>Kafka Worker</h2>
+                <p class="role">The background doer</p>
+                <p>Where queued jobs stop pretending to be magic and actually get processed without blocking the UI.</p>
+                <p class="why">Why it matters: decouples long-running work from user-facing speed.</p>
             </article>
         </section>
 
-        <section class="status">
-            <p><strong>Environment:</strong> <span class="chip chip-blue" th:text="${environment}"></span></p>
-            <p><strong>Status:</strong> <span class="chip chip-green" th:text="${message}"></span></p>
-            <p><strong>Updated:</strong> <span class="chip chip-neutral" th:text="${timestamp}"></span></p>
-        </section>
+        <section class="demo-grid">
+            <section class="demo-card" id="demo-sync">
+                <h2>Demo A - Fast lane: frontend calls the API</h2>
+                <p>
+                    Good old request-response. Fast, direct, and usually less dramatic.
+                    Press the button and the UI asks the API for country/currency data.
+                </p>
+                <div class="step-badges">
+                    <span id="step-a-waiting" class="chip chip-neutral">Waiting</span>
+                    <span id="step-a-calling" class="chip chip-muted">Calling API</span>
+                    <span id="step-a-success" class="chip chip-muted">Data received</span>
+                    <span id="step-a-error" class="chip chip-muted">Something went sideways</span>
+                </div>
+                <p><strong>API status:</strong> <span id="api-status" class="chip chip-neutral">idle</span></p>
+                <p class="error hidden" id="api-error"></p>
+                <button id="toggle-countries" type="button">Load countries from API service</button>
+                <div id="countries-panel" class="hidden countries-panel"></div>
+            </section>
 
-        <section class="api">
-            <h2>Demo A: API call to another microservice</h2>
-            <p>
-                Click the button and this frontend requests data from the API service.
-                If it works, we get countries and currencies. If it fails, we blame networking first.
-            </p>
-            <p><strong>API status:</strong> <span id="api-status" class="chip chip-neutral">idle</span></p>
-            <p class="error hidden" id="api-error"></p>
-            <button id="toggle-countries" type="button">Load countries from API service</button>
-            <div id="countries-panel" class="hidden countries-panel"></div>
+            <section class="demo-card async-card" id="demo-async">
+                <h2>Demo B - Async route: send work through Kafka</h2>
+                <p>
+                    This one takes the scenic route: queued, processed, and returned when the worker is done.
+                    Slower by design, smarter for background jobs.
+                </p>
+                <div class="kafka-controls">
+                    <label for="query-message">Message to process</label>
+                    <input id="query-message" type="text" value="Hello from frontend" maxlength="120">
+                    <button id="simulate-kafka" type="button">Simulate async Kafka journey</button>
+                </div>
+                <ol id="kafka-timeline" class="timeline">
+                    <li>System idle. Waiting for your message.</li>
+                </ol>
+            </section>
         </section>
+    </main>
 
-        <section class="kafka">
-            <h2>Demo B: Kafka async flow preview</h2>
-            <p>
-                This simulates the upcoming async route:
-                Frontend -> API -> Kafka topic -> Kafka worker microservice -> result back to UI.
-            </p>
-            <div class="kafka-controls">
-                <label for="query-message">Message to process</label>
-                <input id="query-message" type="text" value="Hello from frontend" maxlength="120">
-                <button id="simulate-kafka" type="button">Simulate async Kafka journey</button>
-            </div>
-            <ol id="kafka-timeline" class="timeline">
-                <li>Waiting for your command.</li>
-            </ol>
-        </section>
-    </div>
-    <script>
+<script>
         const toggleButton = document.getElementById("toggle-countries");
         const panel = document.getElementById("countries-panel");
         const statusEl = document.getElementById("api-status");
@@ -93,9 +159,39 @@
         const apiBaseUrl = document.body.dataset.apiBaseUrl;
         let loaded = false;
 
+        const stepWaiting = document.getElementById("step-a-waiting");
+        const stepCalling = document.getElementById("step-a-calling");
+        const stepSuccess = document.getElementById("step-a-success");
+        const stepError = document.getElementById("step-a-error");
+
         const setApiStatus = (status, styleClass) => {
             statusEl.textContent = status;
             statusEl.className = `chip ${styleClass}`;
+        };
+
+        const markStep = (active) => {
+            const reset = [stepWaiting, stepCalling, stepSuccess, stepError];
+            reset.forEach((step) => {
+                step.classList.remove("chip-blue", "chip-green", "chip-red");
+                step.classList.add("chip-muted");
+            });
+
+            if (active === "waiting") {
+                stepWaiting.classList.remove("chip-muted");
+                stepWaiting.classList.add("chip-neutral");
+            }
+            if (active === "calling") {
+                stepCalling.classList.remove("chip-muted");
+                stepCalling.classList.add("chip-blue");
+            }
+            if (active === "success") {
+                stepSuccess.classList.remove("chip-muted");
+                stepSuccess.classList.add("chip-green");
+            }
+            if (active === "error") {
+                stepError.classList.remove("chip-muted");
+                stepError.classList.add("chip-red");
+            }
         };
 
         const renderCountries = (countries) => {
@@ -149,6 +245,7 @@
             }
 
             setApiStatus("loading", "chip-blue");
+            markStep("calling");
             errorEl.classList.add("hidden");
             showLoadingState();
 
@@ -160,12 +257,14 @@
                 const countries = await response.json();
                 renderCountries(countries);
                 setApiStatus("ok", "chip-green");
+                markStep("success");
                 panel.classList.remove("hidden");
                 panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
                 toggleButton.textContent = "Hide countries";
                 loaded = true;
             } catch (error) {
                 setApiStatus("error", "chip-red");
+                markStep("error");
                 setError(`API request failed: ${error.message}`);
             }
         });
@@ -175,19 +274,21 @@
             kafkaTimeline.innerHTML = "";
             kafkaButton.disabled = true;
 
-            pushTimelineStep(`Frontend sent query: "${userMessage}"`);
+            pushTimelineStep(`UI packaged request: "${userMessage}"`);
             await sleep(450);
-            pushTimelineStep("API accepted request and marked it as PENDING.");
+            pushTimelineStep("API accepted the job.");
             await sleep(700);
-            pushTimelineStep("API published event to Kafka topic query.created.v1.");
+            pushTimelineStep("Event published to Kafka topic query.created.v1.");
             await sleep(700);
-            pushTimelineStep("Kafka worker microservice consumed event and processed it.");
+            pushTimelineStep("Worker picked it up and started processing.");
             await sleep(650);
-            pushTimelineStep("Result is ready: demo response delivered back to frontend.");
+            pushTimelineStep("Processing completed.");
+            await sleep(450);
+            pushTimelineStep("UI received final result. Distributed system, tiny but ambitious.");
             kafkaTimeline.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
             kafkaButton.disabled = false;
         });
-    </script>
+</script>
 </body>
 </html>
