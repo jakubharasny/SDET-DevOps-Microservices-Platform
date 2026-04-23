@@ -24,7 +24,7 @@ public class HomeController {
 	@GetMapping("/")
 	public String home(Model model) {
 		model.addAttribute("environment", "Preview");
-		model.addAttribute("message", "Ready to plug into the DevOps platform");
+		model.addAttribute("message", "Interactive microservices demo is live");
 		model.addAttribute("timestamp", LocalDateTime.now().format(FORMATTER));
 		model.addAttribute("apiBaseUrl", apiBaseUrl);
 		return "home";
