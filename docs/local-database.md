@@ -1,6 +1,6 @@
 # Local MySQL (dev + SQL practice)
 
-This database is for local development and SQL practice only. The services do not use it yet.
+This database is for local development and SQL practice. The API service now uses it in Docker Compose runtime.
 
 ## Start MySQL
 
@@ -20,6 +20,22 @@ Connection details:
 ```
 docker compose -f deploy/compose/docker-compose.yml exec -T mysql \
   mysql -u sdet -psdetpass sdet_dev < deploy/mysql/schema.sql
+```
+
+## Async query table used by API
+
+When `api` runs via Compose, it also initializes `query_request` from `microservices/api/src/main/resources/schema.sql`.
+
+Quick check:
+
+```
+docker compose -f deploy/compose/docker-compose.yml exec -T mysql \
+  mysql -u sdet -psdetpass sdet_dev -e "
+SELECT id, message, status, created_at, updated_at
+FROM query_request
+ORDER BY created_at DESC
+LIMIT 20;
+"
 ```
 
 If the schema already exists and you only want the new table:

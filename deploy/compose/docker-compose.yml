@@ -13,6 +13,14 @@ services:
       context: ../../microservices/api
     ports:
       - "8081:8081"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/sdet_dev?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=sdet
+      - SPRING_DATASOURCE_PASSWORD=sdetpass
+      - SPRING_SQL_INIT_MODE=always
+    depends_on:
+      mysql:
+        condition: service_healthy
   mysql:
     image: mysql:8.0
     environment:
