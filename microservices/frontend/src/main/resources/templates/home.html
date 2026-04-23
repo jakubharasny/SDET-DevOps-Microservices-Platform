@@ -9,28 +9,68 @@
 <body th:attr="data-api-base-url=${apiBaseUrl}">
     <div class="layout">
         <header>
-            <h1>DevOps Playground UI</h1>
-            <p class="subtitle">Spring Boot frontend placeholder</p>
+            <p class="eyebrow">Microservices Platform Demo</p>
+            <h1>Watch small services do real work</h1>
+            <p class="subtitle">
+                This page is the guided tour: frontend talks to API, API talks to other services,
+                and we pretend everything is calm while logs are having a dramatic moment.
+            </p>
         </header>
+
+        <section class="intro-grid">
+            <article class="card">
+                <h2>1) Frontend</h2>
+                <p>
+                    You are here. This UI sends requests, displays results, and explains what is happening
+                    in plain language.
+                </p>
+            </article>
+            <article class="card">
+                <h2>2) API Service</h2>
+                <p>
+                    The backend API returns country/currency data and will accept async query requests for Kafka flow.
+                </p>
+            </article>
+            <article class="card">
+                <h2>3) Kafka Worker</h2>
+                <p>
+                    Separate microservice. It consumes messages and processes async jobs. Tiny service, real behavior.
+                </p>
+            </article>
+        </section>
+
         <section class="status">
             <p><strong>Environment:</strong> <span th:text="${environment}"></span></p>
             <p><strong>Status:</strong> <span th:text="${message}"></span></p>
             <p><strong>Updated:</strong> <span th:text="${timestamp}"></span></p>
         </section>
-        <section class="actions">
-            <h2>Next Steps</h2>
-            <ul>
-                <li>Wire this UI to backend services.</li>
-                <li>Surface contract test results.</li>
-                <li>Display preview environment metadata.</li>
-            </ul>
-        </section>
+
         <section class="api">
-            <h2>EU Countries & Currencies</h2>
+            <h2>Demo A: API call to another microservice</h2>
+            <p>
+                Click the button and this frontend requests data from the API service.
+                If it works, we get countries and currencies. If it fails, we blame networking first.
+            </p>
             <p><strong>API status:</strong> <span id="api-status">idle</span></p>
             <p class="error hidden" id="api-error"></p>
-            <button id="toggle-countries" type="button">Click this button to show all the countries</button>
+            <button id="toggle-countries" type="button">Load countries from API service</button>
             <div id="countries-panel" class="hidden"></div>
+        </section>
+
+        <section class="kafka">
+            <h2>Demo B: Kafka async flow preview</h2>
+            <p>
+                This simulates the upcoming async route:
+                Frontend -> API -> Kafka topic -> Kafka worker microservice -> result back to UI.
+            </p>
+            <div class="kafka-controls">
+                <label for="query-message">Message to process</label>
+                <input id="query-message" type="text" value="Hello from frontend" maxlength="120">
+                <button id="simulate-kafka" type="button">Simulate async Kafka journey</button>
+            </div>
+            <ol id="kafka-timeline" class="timeline">
+                <li>Waiting for your command.</li>
+            </ol>
         </section>
     </div>
     <script>
@@ -38,6 +78,9 @@
         const panel = document.getElementById("countries-panel");
         const statusEl = document.getElementById("api-status");
         const errorEl = document.getElementById("api-error");
+        const kafkaButton = document.getElementById("simulate-kafka");
+        const kafkaTimeline = document.getElementById("kafka-timeline");
+        const queryInput = document.getElementById("query-message");
         const apiBaseUrl = document.body.dataset.apiBaseUrl;
         let loaded = false;
 
@@ -74,6 +117,13 @@
             errorEl.classList.remove("hidden");
         };
 
+        const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+        const pushTimelineStep = (text) => {
+            const item = document.createElement("li");
+            item.textContent = text;
+            kafkaTimeline.appendChild(item);
+        };
+
         toggleButton.addEventListener("click", async () => {
             if (loaded) {
                 panel.classList.toggle("hidden");
@@ -97,6 +147,24 @@
                 statusEl.textContent = "error";
                 setError(`API request failed: ${error.message}`);
             }
+        });
+
+        kafkaButton.addEventListener("click", async () => {
+            const userMessage = queryInput.value.trim() || "Hello from frontend";
+            kafkaTimeline.innerHTML = "";
+            kafkaButton.disabled = true;
+
+            pushTimelineStep(`Frontend sent query: "${userMessage}"`);
+            await sleep(450);
+            pushTimelineStep("API accepted request and marked it as PENDING.");
+            await sleep(700);
+            pushTimelineStep("API published event to Kafka topic query.created.v1.");
+            await sleep(700);
+            pushTimelineStep("Kafka worker microservice consumed event and processed it.");
+            await sleep(650);
+            pushTimelineStep("Result is ready: demo response delivered back to frontend.");
+
+            kafkaButton.disabled = false;
         });
     </script>
 </body>

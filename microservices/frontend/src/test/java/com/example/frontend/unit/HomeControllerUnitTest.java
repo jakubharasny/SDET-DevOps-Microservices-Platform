@@ -19,7 +19,7 @@ class HomeControllerUnitTest {
 		assertThat(view).isEqualTo("home");
 		assertThat(model.getAttribute("apiBaseUrl")).isEqualTo("http://localhost:8081");
 		assertThat(model.getAttribute("environment")).isEqualTo("Preview");
-		assertThat(model.getAttribute("message")).isEqualTo("Ready to plug into the DevOps platform");
+		assertThat(model.getAttribute("message")).isEqualTo("Interactive microservices demo is live");
 		assertThat(model.getAttribute("timestamp")).isNotNull();
 	}
 }

@@ -2,12 +2,12 @@ body {
     margin: 0;
     padding: 0;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: #0b1221;
+    background: radial-gradient(circle at top, #1a2743 0%, #0b1221 55%);
     color: #e8f0ff;
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
 }
 
 .layout {
@@ -16,6 +16,7 @@ body {
     border-radius: 16px;
     width: min(90vw, 720px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    margin: 2.5rem 1rem;
 }
 
 header {
@@ -25,35 +26,71 @@ header {
 }
 
 header h1 {
-    margin: 0;
+    margin: 0.2rem 0 0;
     font-size: 2rem;
 }
 
+.eyebrow {
+    margin: 0;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #7da0ff;
+}
+
 .subtitle {
-    margin: 0.25rem 0 0;
+    margin: 0.8rem 0 0;
     color: #8fa6d8;
+    line-height: 1.45;
+}
+
+.intro-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.9rem;
+    margin-bottom: 1.25rem;
+}
+
+.card {
+    background: #1b2640;
+    border: 1px solid rgba(143, 166, 216, 0.25);
+    border-radius: 10px;
+    padding: 0.85rem;
+}
+
+.card h2 {
+    margin: 0 0 0.45rem;
+    font-size: 1rem;
+}
+
+.card p {
+    margin: 0;
+    color: #c6d5f7;
+    line-height: 1.35;
+    font-size: 0.92rem;
 }
 
 .status p {
-    margin: 0.5rem 0;
-    font-size: 1.1rem;
+    margin: 0.4rem 0;
+    font-size: 1rem;
 }
 
-.actions h2 {
-    margin-bottom: 0.5rem;
-}
-
-.actions ul {
-    padding-left: 1.25rem;
-    margin: 0;
-}
-
-.actions li {
-    margin-bottom: 0.35rem;
-}
-
-.api {
+.api,
+.kafka {
     margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.api h2,
+.kafka h2 {
+    margin-top: 0;
+}
+
+.api p,
+.kafka p {
+    color: #c6d5f7;
+    line-height: 1.45;
 }
 
 .api table {
@@ -63,7 +100,8 @@ header h1 {
     font-size: 0.95rem;
 }
 
-.api button {
+.api button,
+.kafka button {
     margin-top: 0.5rem;
     background: #2a4cff;
     color: #ffffff;
@@ -73,8 +111,15 @@ header h1 {
     cursor: pointer;
 }
 
-.api button:hover {
+.api button:hover,
+.kafka button:hover {
     background: #1e3ed6;
+}
+
+.api button:disabled,
+.kafka button:disabled {
+    background: #4d5b80;
+    cursor: not-allowed;
 }
 
 .api th,
@@ -94,6 +139,42 @@ header h1 {
     margin: 0.5rem 0;
 }
 
+.kafka-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+.kafka-controls label {
+    font-size: 0.95rem;
+    color: #9fb7ec;
+}
+
+.kafka-controls input {
+    background: #0f1831;
+    border: 1px solid rgba(143, 166, 216, 0.35);
+    border-radius: 8px;
+    color: #e8f0ff;
+    padding: 0.6rem 0.7rem;
+    font-size: 0.95rem;
+}
+
+.timeline {
+    margin: 0.9rem 0 0;
+    padding-left: 1.2rem;
+}
+
+.timeline li {
+    margin-bottom: 0.5rem;
+    color: #d6e3ff;
+}
+
 .hidden {
     display: none;
+}
+
+@media (max-width: 860px) {
+    .intro-grid {
+        grid-template-columns: 1fr;
+    }
 }
