@@ -7,9 +7,18 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
 <body th:attr="data-api-base-url=${apiBaseUrl}">
+    <div class="background-glow background-glow-left"></div>
+    <div class="background-glow background-glow-right"></div>
     <div class="layout">
         <header>
-            <p class="eyebrow">Microservices Platform Demo</p>
+            <div class="brand">
+                <div class="logo-mark" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <p class="eyebrow">Microservices Platform Demo</p>
+            </div>
             <h1>Watch small services do real work</h1>
             <p class="subtitle">
                 This page is the guided tour: frontend talks to API, API talks to other services,
@@ -40,9 +49,9 @@
         </section>
 
         <section class="status">
-            <p><strong>Environment:</strong> <span th:text="${environment}"></span></p>
-            <p><strong>Status:</strong> <span th:text="${message}"></span></p>
-            <p><strong>Updated:</strong> <span th:text="${timestamp}"></span></p>
+            <p><strong>Environment:</strong> <span class="chip chip-blue" th:text="${environment}"></span></p>
+            <p><strong>Status:</strong> <span class="chip chip-green" th:text="${message}"></span></p>
+            <p><strong>Updated:</strong> <span class="chip chip-neutral" th:text="${timestamp}"></span></p>
         </section>
 
         <section class="api">
@@ -51,10 +60,10 @@
                 Click the button and this frontend requests data from the API service.
                 If it works, we get countries and currencies. If it fails, we blame networking first.
             </p>
-            <p><strong>API status:</strong> <span id="api-status">idle</span></p>
+            <p><strong>API status:</strong> <span id="api-status" class="chip chip-neutral">idle</span></p>
             <p class="error hidden" id="api-error"></p>
             <button id="toggle-countries" type="button">Load countries from API service</button>
-            <div id="countries-panel" class="hidden"></div>
+            <div id="countries-panel" class="hidden countries-panel"></div>
         </section>
 
         <section class="kafka">
@@ -84,37 +93,43 @@
         const apiBaseUrl = document.body.dataset.apiBaseUrl;
         let loaded = false;
 
-        const renderTable = (countries) => {
+        const setApiStatus = (status, styleClass) => {
+            statusEl.textContent = status;
+            statusEl.className = `chip ${styleClass}`;
+        };
+
+        const renderCountries = (countries) => {
             if (!countries.length) {
                 panel.innerHTML = "<p>No currency data available yet.</p>";
                 return;
             }
 
-            const rows = countries.map((entry) => `
-                <tr>
-                    <td>${entry.country}</td>
-                    <td>${entry.currencyName}</td>
-                    <td>${entry.currencyCode}</td>
-                </tr>
+            const cards = countries.map((entry, index) => `
+                <li class="country-card" style="animation-delay:${Math.min(index * 60, 600)}ms">
+                    <h3>${entry.country}</h3>
+                    <p>${entry.currencyName}</p>
+                    <span>${entry.currencyCode}</span>
+                </li>
             `).join("");
 
             panel.innerHTML = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Country</th>
-                            <th>Currency</th>
-                            <th>Code</th>
-                        </tr>
-                    </thead>
-                    <tbody>${rows}</tbody>
-                </table>
+                <ul class="country-grid">${cards}</ul>
             `;
         };
 
         const setError = (message) => {
             errorEl.textContent = message;
             errorEl.classList.remove("hidden");
+        };
+
+        const showLoadingState = () => {
+            panel.innerHTML = `
+                <div class="loading-box">
+                    <p>Calling API service...</p>
+                    <div class="loading-bar"></div>
+                </div>
+            `;
+            panel.classList.remove("hidden");
         };
 
         const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -127,11 +142,15 @@
         toggleButton.addEventListener("click", async () => {
             if (loaded) {
                 panel.classList.toggle("hidden");
+                toggleButton.textContent = panel.classList.contains("hidden")
+                    ? "Show countries again"
+                    : "Hide countries";
                 return;
             }
 
-            statusEl.textContent = "loading";
+            setApiStatus("loading", "chip-blue");
             errorEl.classList.add("hidden");
+            showLoadingState();
 
             try {
                 const response = await fetch(`${apiBaseUrl}/api/countries`);
@@ -139,12 +158,14 @@
                     throw new Error(`API returned ${response.status}`);
                 }
                 const countries = await response.json();
-                renderTable(countries);
-                statusEl.textContent = "ok";
+                renderCountries(countries);
+                setApiStatus("ok", "chip-green");
                 panel.classList.remove("hidden");
+                panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                toggleButton.textContent = "Hide countries";
                 loaded = true;
             } catch (error) {
-                statusEl.textContent = "error";
+                setApiStatus("error", "chip-red");
                 setError(`API request failed: ${error.message}`);
             }
         });
@@ -163,6 +184,7 @@
             pushTimelineStep("Kafka worker microservice consumed event and processed it.");
             await sleep(650);
             pushTimelineStep("Result is ready: demo response delivered back to frontend.");
+            kafkaTimeline.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
 
             kafkaButton.disabled = false;
         });

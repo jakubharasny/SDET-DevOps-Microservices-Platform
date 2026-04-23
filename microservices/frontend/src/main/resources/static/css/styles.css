@@ -2,21 +2,27 @@ body {
     margin: 0;
     padding: 0;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    background: radial-gradient(circle at top, #1a2743 0%, #0b1221 55%);
+    background: radial-gradient(circle at top, #24365a 0%, #0b1221 55%);
     color: #e8f0ff;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    position: relative;
+    overflow-x: hidden;
 }
 
 .layout {
-    background: #141c2f;
+    background: rgba(20, 28, 47, 0.88);
+    backdrop-filter: blur(10px);
     padding: 2.5rem;
     border-radius: 16px;
     width: min(90vw, 720px);
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
     margin: 2.5rem 1rem;
+    border: 1px solid rgba(125, 160, 255, 0.2);
+    position: relative;
+    z-index: 2;
 }
 
 header {
@@ -27,7 +33,41 @@ header {
 
 header h1 {
     margin: 0.2rem 0 0;
-    font-size: 2rem;
+    font-size: 2.1rem;
+    line-height: 1.2;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.logo-mark {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    padding: 5px;
+    background: linear-gradient(135deg, #59a3ff, #7f6bff);
+    box-shadow: 0 0 0 3px rgba(89, 163, 255, 0.2);
+}
+
+.logo-mark span {
+    display: block;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.88);
+    animation: pulse 1.7s infinite ease-in-out;
+}
+
+.logo-mark span:nth-child(2) {
+    animation-delay: 0.25s;
+}
+
+.logo-mark span:nth-child(3) {
+    animation-delay: 0.5s;
 }
 
 .eyebrow {
@@ -52,10 +92,17 @@ header h1 {
 }
 
 .card {
-    background: #1b2640;
+    background: linear-gradient(160deg, #1b2640, #1f3152);
     border: 1px solid rgba(143, 166, 216, 0.25);
     border-radius: 10px;
     padding: 0.85rem;
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(89, 163, 255, 0.45);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25);
 }
 
 .card h2 {
@@ -73,6 +120,36 @@ header h1 {
 .status p {
     margin: 0.4rem 0;
     font-size: 1rem;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.22rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-size: 0.82rem;
+    letter-spacing: 0.01em;
+}
+
+.chip-blue {
+    background: rgba(54, 115, 255, 0.22);
+    border-color: rgba(89, 163, 255, 0.5);
+}
+
+.chip-green {
+    background: rgba(26, 166, 114, 0.2);
+    border-color: rgba(74, 211, 152, 0.45);
+}
+
+.chip-red {
+    background: rgba(171, 63, 87, 0.24);
+    border-color: rgba(255, 139, 139, 0.45);
+}
+
+.chip-neutral {
+    background: rgba(131, 152, 198, 0.2);
+    border-color: rgba(143, 166, 216, 0.45);
 }
 
 .api,
@@ -103,17 +180,19 @@ header h1 {
 .api button,
 .kafka button {
     margin-top: 0.5rem;
-    background: #2a4cff;
+    background: linear-gradient(130deg, #3163ff, #6f57ff);
     color: #ffffff;
     border: none;
     padding: 0.6rem 1rem;
     border-radius: 8px;
     cursor: pointer;
+    transition: transform 140ms ease, box-shadow 140ms ease;
 }
 
 .api button:hover,
 .kafka button:hover {
-    background: #1e3ed6;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(49, 99, 255, 0.35);
 }
 
 .api button:disabled,
@@ -167,14 +246,144 @@ header h1 {
 .timeline li {
     margin-bottom: 0.5rem;
     color: #d6e3ff;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: rise 260ms ease forwards;
+}
+
+.countries-panel {
+    margin-top: 0.8rem;
+    max-height: 340px;
+    overflow: auto;
+    padding-right: 0.3rem;
+}
+
+.country-grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0;
+}
+
+.country-card {
+    background: rgba(20, 34, 62, 0.9);
+    border: 1px solid rgba(143, 166, 216, 0.22);
+    border-radius: 10px;
+    padding: 0.65rem 0.7rem;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: rise 320ms ease forwards;
+}
+
+.country-card h3 {
+    margin: 0;
+    font-size: 0.98rem;
+}
+
+.country-card p {
+    margin: 0.28rem 0;
+    color: #b7caef;
+    font-size: 0.9rem;
+}
+
+.country-card span {
+    display: inline-block;
+    color: #86b4ff;
+    font-weight: 700;
+    font-size: 0.84rem;
+}
+
+.loading-box {
+    background: rgba(18, 30, 54, 0.9);
+    border: 1px solid rgba(143, 166, 216, 0.24);
+    border-radius: 10px;
+    padding: 0.9rem;
+}
+
+.loading-box p {
+    margin: 0 0 0.5rem;
+}
+
+.loading-bar {
+    height: 8px;
+    width: 100%;
+    border-radius: 99px;
+    background: linear-gradient(90deg, rgba(55, 107, 237, 0.2), rgba(114, 80, 255, 0.8), rgba(55, 107, 237, 0.2));
+    background-size: 180% 100%;
+    animation: shimmer 1.5s linear infinite;
 }
 
 .hidden {
     display: none;
 }
 
+.background-glow {
+    position: fixed;
+    width: 320px;
+    height: 320px;
+    border-radius: 50%;
+    filter: blur(65px);
+    opacity: 0.38;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.background-glow-left {
+    left: -120px;
+    top: 110px;
+    background: #2f5fff;
+}
+
+.background-glow-right {
+    right: -100px;
+    top: 320px;
+    background: #6f57ff;
+}
+
 @media (max-width: 860px) {
+    .layout {
+        padding: 1.35rem;
+    }
+
     .intro-grid {
         grid-template-columns: 1fr;
+    }
+
+    .country-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(0.92);
+        opacity: 0.65;
+    }
+    50% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes shimmer {
+    from {
+        background-position: 100% 0;
+    }
+    to {
+        background-position: -100% 0;
+    }
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
