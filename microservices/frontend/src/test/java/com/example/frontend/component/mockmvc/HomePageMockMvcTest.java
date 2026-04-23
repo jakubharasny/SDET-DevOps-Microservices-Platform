@@ -21,8 +21,7 @@ class HomePageMockMvcTest {
 	@Test
 	void rendersButtonAndCountriesSection() throws Exception {
 		mockMvc.perform(get("/")).andExpect(status().isOk())
-				.andExpect(content()
-						.string(org.hamcrest.Matchers.containsString("Load countries from API service")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("Load countries from API service")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("kafka-timeline")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Simulate async Kafka journey")));
 	}
