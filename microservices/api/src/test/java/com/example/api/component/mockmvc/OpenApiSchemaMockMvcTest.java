@@ -33,6 +33,7 @@ class OpenApiSchemaMockMvcTest {
 
 		assertThat(schema).isNotBlank();
 		assertThat(schema).contains("\"/api/countries\"");
+		assertThat(schema).contains("\"/api/queries\"");
 
 		Path outputPath = Path.of("..", "..", "docs", "openapi", "api.json");
 		Files.createDirectories(outputPath.getParent());

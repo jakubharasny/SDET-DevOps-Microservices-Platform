@@ -1,31 +1,81 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "OpenAPI definition",
-    "version": "v0"
+  "openapi" : "3.0.1",
+  "info" : {
+    "title" : "OpenAPI definition",
+    "version" : "v0"
   },
-  "servers": [
-    {
-      "url": "http://localhost",
-      "description": "Generated server url"
-    }
-  ],
-  "paths": {
-    "/api/ping": {
-      "get": {
-        "tags": [
-          "ping-controller"
-        ],
-        "operationId": "ping",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "object",
-                  "additionalProperties": {
-                    "type": "string"
+  "servers" : [ {
+    "url" : "http://localhost",
+    "description" : "Generated server url"
+  } ],
+  "paths" : {
+    "/api/queries" : {
+      "post" : {
+        "tags" : [ "query-controller" ],
+        "operationId" : "create",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/QueryCreateRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QueryCreatedResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/queries/{id}" : {
+      "get" : {
+        "tags" : [ "query-controller" ],
+        "operationId" : "getById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/ping" : {
+      "get" : {
+        "tags" : [ "ping-controller" ],
+        "operationId" : "ping",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "string"
                   }
                 }
               }
@@ -34,21 +84,19 @@
         }
       }
     },
-    "/api/countries": {
-      "get": {
-        "tags": [
-          "countries-controller"
-        ],
-        "operationId": "countries",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "*/*": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/CountryCurrency"
+    "/api/countries" : {
+      "get" : {
+        "tags" : [ "countries-controller" ],
+        "operationId" : "countries",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/CountryCurrency"
                   }
                 }
               }
@@ -58,19 +106,42 @@
       }
     }
   },
-  "components": {
-    "schemas": {
-      "CountryCurrency": {
-        "type": "object",
-        "properties": {
-          "country": {
-            "type": "string"
+  "components" : {
+    "schemas" : {
+      "QueryCreateRequest" : {
+        "required" : [ "message" ],
+        "type" : "object",
+        "properties" : {
+          "message" : {
+            "maxLength" : 120,
+            "minLength" : 0,
+            "type" : "string"
+          }
+        }
+      },
+      "QueryCreatedResponse" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "string"
           },
-          "currencyName": {
-            "type": "string"
+          "status" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "PROCESSING", "DONE", "FAILED" ]
+          }
+        }
+      },
+      "CountryCurrency" : {
+        "type" : "object",
+        "properties" : {
+          "country" : {
+            "type" : "string"
           },
-          "currencyCode": {
-            "type": "string"
+          "currencyName" : {
+            "type" : "string"
+          },
+          "currencyCode" : {
+            "type" : "string"
           }
         }
       }
