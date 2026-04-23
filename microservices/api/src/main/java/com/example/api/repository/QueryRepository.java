@@ -12,13 +12,9 @@ import org.springframework.stereotype.Repository;
 public class QueryRepository {
 
 	private final JdbcTemplate jdbcTemplate;
-	private final RowMapper<QueryRecord> rowMapper = (rs, rowNum) -> new QueryRecord(
-			rs.getString("id"),
-			rs.getString("message"),
-			QueryStatus.valueOf(rs.getString("status")),
-			rs.getString("result_text"),
-			rs.getString("error_text"),
-			toInstant(rs.getTimestamp("created_at")),
+	private final RowMapper<QueryRecord> rowMapper = (rs, rowNum) -> new QueryRecord(rs.getString("id"),
+			rs.getString("message"), QueryStatus.valueOf(rs.getString("status")), rs.getString("result_text"),
+			rs.getString("error_text"), toInstant(rs.getTimestamp("created_at")),
 			toInstant(rs.getTimestamp("updated_at")));
 
 	public QueryRepository(JdbcTemplate jdbcTemplate) {
@@ -26,20 +22,13 @@ public class QueryRepository {
 	}
 
 	public void insert(QueryRecord record) {
-		jdbcTemplate.update(
-				"""
-						INSERT INTO query_request
-						    (id, message, status, result_text, error_text, created_at, updated_at)
-						VALUES
-						    (?, ?, ?, ?, ?, ?, ?)
-						""",
-				record.id(),
-				record.message(),
-				record.status().name(),
-				record.resultText(),
-				record.errorText(),
-				Timestamp.from(record.createdAt()),
-				Timestamp.from(record.updatedAt()));
+		jdbcTemplate.update("""
+				INSERT INTO query_request
+				    (id, message, status, result_text, error_text, created_at, updated_at)
+				VALUES
+				    (?, ?, ?, ?, ?, ?, ?)
+				""", record.id(), record.message(), record.status().name(), record.resultText(), record.errorText(),
+				Timestamp.from(record.createdAt()), Timestamp.from(record.updatedAt()));
 	}
 
 	@SuppressWarnings("null")

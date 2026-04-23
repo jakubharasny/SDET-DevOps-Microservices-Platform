@@ -40,13 +40,7 @@ public class QueryController {
 	}
 
 	private QueryDetailsResponse toResponse(QueryRecord record) {
-		return new QueryDetailsResponse(
-				record.id(),
-				record.status(),
-				record.message(),
-				record.resultText(),
-				record.errorText(),
-				record.createdAt(),
-				record.updatedAt());
+		return new QueryDetailsResponse(record.id(), record.status(), record.message(), record.resultText(),
+				record.errorText(), record.createdAt(), record.updatedAt());
 	}
 }

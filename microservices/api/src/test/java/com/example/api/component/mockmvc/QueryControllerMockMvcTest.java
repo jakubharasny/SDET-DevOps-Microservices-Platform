@@ -30,14 +30,15 @@ class QueryControllerMockMvcTest {
 		MvcResult createResult = mockMvc
 				.perform(post("/api/queries").contentType(MediaType.APPLICATION_JSON).content("""
 						{"message":"run async demo"}
-						"""))
-				.andExpect(status().isCreated()).andExpect(jsonPath("$.status").value("PENDING")).andReturn();
+						""")).andExpect(status().isCreated()).andExpect(jsonPath("$.status").value("PENDING"))
+				.andReturn();
 
 		JsonNode createJson = objectMapper.readTree(createResult.getResponse().getContentAsString());
 		String id = createJson.get("id").asText();
 
 		mockMvc.perform(get("/api/queries/{id}", id)).andExpect(status().isOk()).andExpect(jsonPath("$.id").value(id))
-				.andExpect(jsonPath("$.message").value("run async demo")).andExpect(jsonPath("$.status").value("PENDING"));
+				.andExpect(jsonPath("$.message").value("run async demo"))
+				.andExpect(jsonPath("$.status").value("PENDING"));
 	}
 
 	@Test
