@@ -88,6 +88,11 @@ body {
     margin-bottom: 0.35rem;
 }
 
+.brandline svg {
+    max-width: 100%;
+    height: auto;
+}
+
 .hero h1 {
     margin: 0.45rem 0 0;
     font-size: clamp(1.7rem, 3.2vw, 2.45rem);
