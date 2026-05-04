@@ -36,6 +36,7 @@ access = case role              # case expression
          when "user" then "limited"
          else "none"
          end
+has_full_access = access == "all" # use declaration result
 
 # 07) LOOPS
 sum = 0
@@ -53,18 +54,21 @@ def greet(person)               # method definition
   "Hello #{person}"
 end
 message = greet(name)           # call method
+name_length = message.length    # call String method
 
 # 10) DEFAULT + KEYWORD ARGUMENTS
 def build_tag(prefix = "dev", env: "local")
   "#{prefix}-#{env}"
 end
 tag = build_tag(env: "test")    # keyword argument
+tag_parts = tag.split("-")      # call method on returned value
 
 # 11) SPLAT ARGUMENTS
 def total(*values)              # variable arg count
   values.sum
 end
 total_sum = total(1, 2, 3, 4)
+many_values = total_sum > 5     # use method call result
 
 # 12) BLOCKS + LAMBDAS + PROCS
 def with_timing
@@ -75,6 +79,7 @@ end
 double = ->(x) { x * 2 }        # lambda literal
 triple = Proc.new { |x| x * 3 } # proc object
 timed = with_timing { double.call(10) }
+tripled = triple.call(4)        # call proc object
 
 # 13) CLASSES + OBJECTS
 class Person
@@ -97,6 +102,7 @@ class Person
   end
 end
 person = Person.new("Mia")
+person.rename!("Mila")          # call instance method
 
 # 14) INHERITANCE
 class Admin < Person
@@ -105,6 +111,7 @@ class Admin < Person
   end
 end
 admin = Admin.new("Root")
+admin_role = admin.role         # call subclass method
 
 # 15) MODULES (MIXINS)
 module Loggable

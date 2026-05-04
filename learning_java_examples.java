@@ -50,6 +50,7 @@ public class learning_java_examples {
             case "user" -> "limited";
             default -> "none";
         };
+        boolean hasFullAccess = "all".equals(access);     // use declaration result
 
         // 07) LOOPS
         int sum = 0;
@@ -68,22 +69,28 @@ public class learning_java_examples {
 
         // 09) METHODS
         String message = greet(name);                    // call method
+        int nameLength = message.length();               // call String method
 
         // 10) DEFAULT-LIKE + NAMED-STYLE VIA OVERLOAD
         String tag = buildTag("dev", "test");           // explicit params
+        String[] tagParts = tag.split("-");             // call method on returned value
 
         // 11) VARARGS ARGUMENTS
         int totalSum = total(1, 2, 3, 4);               // variable arg count
+        boolean manyValues = totalSum > 5;              // use method call result
 
         // 12) LAMBDAS + FUNCTIONAL INTERFACES
         TimedResult<Integer> timed = withTiming(() -> doubleValue(10)); // execute lambda
         java.util.function.Function<Integer, Integer> triple = x -> x * 3; // function object
+        int tripled = triple.apply(4);                  // call lambda/function object
 
         // 13) CLASSES + OBJECTS
         Person person = new Person("Mia");
+        person.rename("Mila");                          // call instance method
 
         // 14) INHERITANCE
         Admin admin = new Admin("Root");
+        String adminRole = admin.role();                // call subclass method
 
         // 15) INTERFACES (MIXIN-LIKE DEFAULT METHODS)
         Worker worker = new Worker();
