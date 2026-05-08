@@ -12,6 +12,7 @@ Then open `http://localhost:8081/api/countries`.
 Async query demo endpoints:
 - `POST /api/queries` with body `{ "message": "hello" }`
 - `GET /api/queries/{id}` to read status/result payload
+- With Compose, API publishes query-created events to Kafka topic `query.created.v1`
 
 ## Run tests
 ```
