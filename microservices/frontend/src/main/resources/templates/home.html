@@ -142,7 +142,7 @@
                 <div class="kafka-controls">
                     <label for="query-message">Message to process</label>
                     <input id="query-message" type="text" value="Hello from frontend" maxlength="120">
-                    <button id="simulate-kafka" type="button">Simulate async Kafka journey</button>
+                    <button id="simulate-kafka" type="button">Run async Kafka flow</button>
                 </div>
                 <ol id="kafka-timeline" class="timeline">
                     <li>System idle. Waiting for your message.</li>
@@ -277,20 +277,55 @@
             kafkaTimeline.innerHTML = "";
             kafkaButton.disabled = true;
 
-            pushTimelineStep(`UI packaged request: "${userMessage}"`);
-            await sleep(450);
-            pushTimelineStep("API accepted the job.");
-            await sleep(700);
-            pushTimelineStep("Event published to Kafka topic query.created.v1.");
-            await sleep(700);
-            pushTimelineStep("Worker picked it up and started processing.");
-            await sleep(650);
-            pushTimelineStep("Processing completed.");
-            await sleep(450);
-            pushTimelineStep("UI received final result. Distributed system, tiny but ambitious.");
-            kafkaTimeline.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+            try {
+                pushTimelineStep(`UI sent POST /api/queries with message: "${userMessage}"`);
 
-            kafkaButton.disabled = false;
+                const createResponse = await fetch(`${apiBaseUrl}/api/queries`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: userMessage })
+                });
+                if (!createResponse.ok) {
+                    throw new Error(`POST failed with status ${createResponse.status}`);
+                }
+                const created = await createResponse.json();
+                pushTimelineStep(`API accepted job ${created.id} with status ${created.status}.`);
+                pushTimelineStep("Kafka worker is now processing asynchronously...");
+
+                let done = false;
+                // Polling is enough for this demo; websocket/SSE can come later.
+                for (let attempt = 1; attempt <= 20; attempt++) {
+                    await sleep(700);
+                    const detailsResponse = await fetch(`${apiBaseUrl}/api/queries/${created.id}`);
+                    if (!detailsResponse.ok) {
+                        throw new Error(`GET failed with status ${detailsResponse.status}`);
+                    }
+                    const details = await detailsResponse.json();
+                    pushTimelineStep(`Poll ${attempt}: status=${details.status}`);
+
+                    if (details.status === "DONE") {
+                        const result = details.result || "(empty result)";
+                        pushTimelineStep(`Worker finished. Result: ${result}`);
+                        done = true;
+                        break;
+                    }
+                    if (details.status === "FAILED") {
+                        const error = details.error || "unknown worker failure";
+                        pushTimelineStep(`Worker failed: ${error}`);
+                        done = true;
+                        break;
+                    }
+                }
+
+                if (!done) {
+                    pushTimelineStep("Still not done after polling window. Kafka is alive, but this job is taking too long.");
+                }
+            } catch (error) {
+                pushTimelineStep(`Async flow failed: ${error.message}`);
+            } finally {
+                kafkaTimeline.lastElementChild?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                kafkaButton.disabled = false;
+            }
         });
 </script>
 </body>
