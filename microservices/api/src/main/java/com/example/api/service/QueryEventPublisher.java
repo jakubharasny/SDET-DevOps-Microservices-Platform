@@ -38,8 +38,7 @@ public class QueryEventPublisher {
 			String payload = objectMapper.writeValueAsString(event);
 			// Use query id as key so all updates for the same query keep partition order.
 			kafkaTemplate.send(topic, record.id(), payload);
-		}
-		catch (JsonProcessingException ex) {
+		} catch (JsonProcessingException ex) {
 			log.error("Failed to serialize query-created event for id={}", record.id(), ex);
 		}
 	}
