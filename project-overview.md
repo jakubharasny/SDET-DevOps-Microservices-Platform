@@ -351,3 +351,11 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - When plan changes:
   - update this file first
   - then implement
+
+
+12) Collaboration Style Preference (J)
+
+- Prefer blunt, pragmatic, no-fluff communication.
+- Dark humor is welcome when useful.
+- Avoid corporate-polite filler and long theory dumps.
+- Default to actionable, concrete next steps.
