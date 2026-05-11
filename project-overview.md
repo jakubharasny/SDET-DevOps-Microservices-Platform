@@ -59,12 +59,12 @@ Folder structure constraints (important)
 
 This section defines the current project phase and completed milestones. Cursor agents must use it to decide whether a request is in-scope for the current phase. If a request belongs to a later phase, the agent must warn and request an override.
 
-Current Phase: Phase 2 — CI Foundation (GitHub Actions + GHCR)
+Current Phase: Phase 1 — Local Development (Docker Compose + Kafka async flow)
 
 
 Phase 1 — Local Development (Docker Compose)
 
-Goal: Local multi-service environment running reliably with basic testing.
+Goal: Local multi-service environment running reliably with basic testing, including one real async Kafka flow.
 
 - [x] Project scaffold created (monorepo structure)
 - [x] First microservice created (frontend Spring Boot + Thymeleaf)
@@ -73,11 +73,15 @@ Goal: Local multi-service environment running reliably with basic testing.
 - [x] Basic health endpoint added (/actuator/health or similar)
 - [x] Basic integration test runs locally (smoke test)
 - [x] Developer README for local run instructions (docs/local-development.md)
+- [x] Async query API endpoints added (`POST /api/queries`, `GET /api/queries/{id}`)
+- [x] Kafka broker + worker integrated in local Compose stack
+- [x] Frontend async demo uses real API/Kafka flow (no fake timeline-only simulation)
 
 Exit criteria for Phase 1:
 - Docker Compose can run multiple services locally
 - At least one automated test can be executed locally
 - Clear documentation exists for running the system
+- Async message processing is demonstrated end-to-end via Kafka
 
 
 Phase 2 — CI Foundation (GitHub Actions + GHCR)
@@ -162,8 +166,9 @@ Planned services (added gradually)
   - used by frontend
 - wiremock (mock downstream dependencies)
   - used heavily in preview environments
-- kafka-consumer (optional later)
-  - demonstrates async processing, messaging pattern
+- kafka-consumer (Phase 1)
+  - consumes query-created events from Kafka
+  - updates query status/result for frontend polling flow
 
 Service rules
 - Each service is independently buildable and deployable.
@@ -287,6 +292,7 @@ Do not create the entire target tree upfront.
 Current focus (Phase 1):
 - microservices/frontend
 - microservices/api
+- microservices/kafka-consumer
 - project-overview.md
 - .cursorrules
 
@@ -303,6 +309,7 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - microservices/
   - frontend/
   - api/
+  - kafka-consumer/
 - deploy/
   - compose/
   - mysql/
@@ -331,7 +338,9 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - Test layout split into unit/component/integration folders
 - Playwright E2E test added (tests/e2e-java)
 - Local MySQL for SQL practice (schema + seed)
-- Phase 1 exit criteria met; Phase 2 started
+- Kafka worker microservice added for async query processing
+- Frontend async demo switched to real `POST /api/queries` + polling `GET /api/queries/{id}`
+- Phase 1 extended to include Kafka async flow before Phase 2 CI work
 - Frontend calls API to render EU country currencies
 
 
@@ -342,3 +351,11 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - When plan changes:
   - update this file first
   - then implement
+
+
+12) Collaboration Style Preference (J)
+
+- Prefer blunt, pragmatic, no-fluff communication.
+- Dark humor is welcome when useful.
+- Avoid corporate-polite filler and long theory dumps.
+- Default to actionable, concrete next steps.

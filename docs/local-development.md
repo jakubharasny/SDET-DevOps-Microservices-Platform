@@ -30,8 +30,10 @@ Endpoints:
 - Frontend health: `http://localhost:8080/actuator/health`
 - API ping: `http://localhost:8081/api/ping`
 - API countries: `http://localhost:8081/api/countries`
+- Async create query: `POST http://localhost:8081/api/queries`
+- Async query status: `GET http://localhost:8081/api/queries/{id}`
 
-Note: the Compose setup expects a `Dockerfile` in `microservices/frontend` and `microservices/api`.
+Note: the Compose setup expects a `Dockerfile` in `microservices/frontend`, `microservices/api`, and `microservices/kafka-consumer`.
 
 Testing layout (Phase 1):
 - Unit tests live under each service:
