@@ -12,9 +12,11 @@ import org.springframework.stereotype.Service;
 public class QueryService {
 
 	private final QueryRepository queryRepository;
+	private final QueryEventPublisher queryEventPublisher;
 
-	public QueryService(QueryRepository queryRepository) {
+	public QueryService(QueryRepository queryRepository, QueryEventPublisher queryEventPublisher) {
 		this.queryRepository = queryRepository;
+		this.queryEventPublisher = queryEventPublisher;
 	}
 
 	public QueryRecord create(String message) {
@@ -22,6 +24,7 @@ public class QueryService {
 		QueryRecord record = new QueryRecord(UUID.randomUUID().toString(), message, QueryStatus.PENDING, null, null,
 				now, now);
 		queryRepository.insert(record);
+		queryEventPublisher.publishCreated(record);
 		return record;
 	}
 
