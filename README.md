@@ -5,6 +5,7 @@ Monorepo for a small microservices system plus a realistic DevOps/SDET delivery 
 ## Services
 - `microservices/frontend` — Spring Boot + Thymeleaf UI
 - `microservices/api` — Spring Boot REST API
+- `microservices/kafka-consumer` — Spring Boot Kafka worker
 
 ## Quick start
 ```
@@ -16,6 +17,8 @@ Endpoints:
 - Frontend health: `http://localhost:8080/actuator/health`
 - API ping: `http://localhost:8081/api/ping`
 - API countries: `http://localhost:8081/api/countries`
+- Async create query: `POST http://localhost:8081/api/queries`
+- Async query status: `GET http://localhost:8081/api/queries/{id}`
 
 ## Testing
 Run tests per service:
