@@ -22,11 +22,8 @@ import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(properties = {
-		"spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
-		"app.query-events.enabled=true",
-		"app.query-events.topic=query.created.v1"
-})
+@SpringBootTest(properties = {"spring.kafka.bootstrap-servers=${spring.embedded.kafka.brokers}",
+		"app.query-events.enabled=true", "app.query-events.topic=query.created.v1"})
 @EmbeddedKafka(partitions = 1, topics = "query.created.v1")
 class QueryEventPublisherKafkaIntegrationTest {
 
@@ -50,7 +47,8 @@ class QueryEventPublisherKafkaIntegrationTest {
 
 	@Test
 	void publishesSerializableEventToKafkaTopic() throws Exception {
-		Map<String, Object> consumerProps = KafkaTestUtils.consumerProps("publisher-int-test", "true", embeddedKafkaBroker);
+		Map<String, Object> consumerProps = KafkaTestUtils.consumerProps("publisher-int-test", "true",
+				embeddedKafkaBroker);
 		consumerProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		consumer = new DefaultKafkaConsumerFactory<>(consumerProps, new StringDeserializer(), new StringDeserializer())
 				.createConsumer();
