@@ -25,6 +25,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.test.EmbeddedKafkaBroker;
 import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.lang.NonNull;
 import org.springframework.test.annotation.DirtiesContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -80,7 +81,7 @@ class QueryCreatedConsumerKafkaIntegrationTest {
 
 		@Bean
 		ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory(
-				ConsumerFactory<String, String> consumerFactory) {
+				@NonNull ConsumerFactory<String, String> consumerFactory) {
 			ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
 			factory.setConsumerFactory(consumerFactory);
 			return factory;
@@ -96,7 +97,7 @@ class QueryCreatedConsumerKafkaIntegrationTest {
 		}
 
 		@Bean
-		KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> producerFactory) {
+		KafkaTemplate<String, String> kafkaTemplate(@NonNull ProducerFactory<String, String> producerFactory) {
 			return new KafkaTemplate<>(producerFactory);
 		}
 	}

@@ -94,11 +94,13 @@ Goal: Every service has CI build/test and produces versioned container images.
 - [ ] CI builds Docker image and publishes to GHCR on merge/main
 - [ ] CI triggers only relevant service pipelines (path-based filtering)
 - [ ] Optional: vulnerability scan or dependency check included
+- [ ] Sonar quality analysis setup PR created (SonarCloud/SonarQube) with new-code quality gate
 
 Exit criteria for Phase 2:
 - CI is reliable and fast
 - Images are published automatically
 - PR gate prevents broken builds/tests from merging
+- Sonar quality gate is defined and enforceable for new code
 
 
 Phase 3 — Local Kubernetes (kind/k3d)
@@ -385,6 +387,15 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - Frontend async demo switched to real `POST /api/queries` + polling `GET /api/queries/{id}`
 - Phase 1 extended to include Kafka async flow before Phase 2 CI work
 - Frontend calls API to render EU country currencies
+- Playwright coverage split by ownership:
+  - UI-mocked Playwright flow tests live with frontend microservice
+  - full no-mock platform E2E stays in `tests/e2e-java`
+- Local quality gates hardened:
+  - service lint hooks now compile with `-DskipTests` before Spotless/tests
+  - Maven compiler is configured to fail build on warnings (`-Xlint:unchecked`)
+  - null-safety drift is blocked earlier in local and CI-style runs
+- Sonar adoption planned:
+  - Phase 2 will include a dedicated PR to wire Sonar quality analysis and gate policy
 
 
 11) How to use this document
