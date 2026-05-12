@@ -1,8 +1,9 @@
-# Playwright UI Flow Tests (Java)
+# Playwright E2E/UI Tests (Java)
 
-Lightweight browser tests for the frontend UI flow.
-The suite mocks `/api/countries` and `/api/queries*` calls in-browser so CI stays
-fast and deterministic while still validating real user interactions.
+This module now has two Playwright layers:
+- `UiMockedFlowTest`: UI microservice-level tests with browser-level mocks for
+  `/api/countries` and `/api/queries*` (fast CI gate).
+- `CountriesE2ETest`: real end-to-end flow (no mocks) against full Compose stack.
 
 ## Install Playwright browsers
 
@@ -14,6 +15,20 @@ mvn -q -f tests/e2e-java/pom.xml exec:java -Dexec.args="install"
 
 ```
 mvn -q -f tests/e2e-java/pom.xml test
+```
+
+## Run only mocked UI tests
+
+```
+mvn -q -f tests/e2e-java/pom.xml -Dtest=UiMockedFlowTest test
+```
+
+## Run only real end-to-end tests
+
+Requires the full Compose stack (`frontend`, `api`, `kafka`, `kafka-consumer`, `mysql`) running.
+
+```
+mvn -q -f tests/e2e-java/pom.xml -Dtest=CountriesE2ETest test
 ```
 
 ## Custom base URL
