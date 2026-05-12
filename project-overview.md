@@ -239,6 +239,7 @@ Provider workflow:
 6.1 Build pipeline per service
 Triggered by changes in microservices/<service>/**
 - compile + unit test
+- formatting/lint gate (Spotless check)
 - build Docker image
 - publish image to GHCR (main branch)
 - publish contract artifacts (where relevant)
@@ -253,6 +254,11 @@ Triggered on PR open/update:
 - comment PR with preview URL
 Triggered on PR close:
 - destroy namespace
+
+6.3 Formatting gate policy (Spotless)
+- Spotless is a required quality gate for Java services.
+- If `spotless:check` fails, run `spotless:apply` in the affected module and re-run checks.
+- Do not push PR updates with known Spotless violations; fix formatting first.
 
 
 7) Tech Stack
