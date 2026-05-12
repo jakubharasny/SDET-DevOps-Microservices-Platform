@@ -3,6 +3,7 @@ package com.example.api.service;
 import com.example.api.repository.QueryRecord;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Objects;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,9 +36,11 @@ public class QueryEventPublisher {
 		// Keep the event payload tiny and stable for a beginner-friendly async flow.
 		QueryCreatedEvent event = new QueryCreatedEvent(record.id(), record.message(), record.createdAt().toString());
 		try {
-			String payload = objectMapper.writeValueAsString(event);
+			String payload = Objects.requireNonNull(objectMapper.writeValueAsString(event),
+					"Serialized query-created event payload must not be null");
+			String key = Objects.requireNonNull(record.id(), "Query id must not be null for Kafka message key");
 			// Use query id as key so all updates for the same query keep partition order.
-			kafkaTemplate.send(topic, record.id(), payload);
+			kafkaTemplate.send(Objects.requireNonNull(topic, "Kafka topic must not be null"), key, payload);
 		} catch (JsonProcessingException ex) {
 			log.error("Failed to serialize query-created event for id={}", record.id(), ex);
 		}

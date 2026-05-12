@@ -2,6 +2,7 @@ package com.example.kafkaconsumer.integration.kafka;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -43,12 +44,14 @@ class KafkaBrokerRoundTripIntegrationTest {
 
 	@Test
 	void storesAndReturnsRecordsFromTopicLog() {
-		Map<String, Object> producerProps = KafkaTestUtils.producerProps(embeddedKafkaBroker);
+		Map<String, Object> producerProps = Objects.requireNonNull(KafkaTestUtils.producerProps(embeddedKafkaBroker),
+				"producerProps must not be null");
 		producer = new DefaultKafkaProducerFactory<>(producerProps, new StringSerializer(), new StringSerializer())
 				.createProducer();
 
-		Map<String, Object> consumerProps = KafkaTestUtils.consumerProps("broker-roundtrip-group", "true",
-				embeddedKafkaBroker);
+		Map<String, Object> consumerProps = Objects.requireNonNull(
+				KafkaTestUtils.consumerProps("broker-roundtrip-group", "true", embeddedKafkaBroker),
+				"consumerProps must not be null");
 		consumerProps.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 		consumer = new DefaultKafkaConsumerFactory<>(consumerProps, new StringDeserializer(), new StringDeserializer())
 				.createConsumer();
