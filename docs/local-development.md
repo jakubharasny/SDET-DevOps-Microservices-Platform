@@ -60,6 +60,10 @@ mvn -q -f tests/e2e-java/pom.xml exec:java \
 mvn -q -f tests/e2e-java/pom.xml test
 ```
 
+The Playwright suite targets UI behavior and mocks API/Kafka-facing HTTP calls
+in the browser (`/api/countries`, `/api/queries*`). Full-platform E2E remains a
+preview/staging gate.
+
 ## Local MySQL for SQL practice
 See `docs/local-database.md`.
 

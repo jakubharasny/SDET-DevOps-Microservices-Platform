@@ -1,6 +1,8 @@
-# Playwright E2E (Java)
+# Playwright UI Flow Tests (Java)
 
-Lightweight browser tests for the local UI. Requires frontend + API running.
+Lightweight browser tests for the frontend UI flow.
+The suite mocks `/api/countries` and `/api/queries*` calls in-browser so CI stays
+fast and deterministic while still validating real user interactions.
 
 ## Install Playwright browsers
 
