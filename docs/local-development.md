@@ -61,9 +61,11 @@ mvn -q -f tests/e2e-java/pom.xml test
 ```
 
 Playwright is split into two practical lanes:
-- `UiMockedFlowTest` for UI microservice-level CI checks (browser-level mocks for
-  `/api/countries` and `/api/queries*`).
-- `CountriesE2ETest` for real full-stack validation against Compose (no mocks).
+- `microservices/frontend` owns UI-mocked Playwright checks at
+  `src/test/java/com/example/frontend/component/playwright` (browser-level mocks
+  for `/api/countries` and `/api/queries*`).
+- `tests/e2e-java` keeps real full-stack validation (`CountriesE2ETest`) against
+  Compose (no mocks).
 
 ## Local MySQL for SQL practice
 See `docs/local-database.md`.

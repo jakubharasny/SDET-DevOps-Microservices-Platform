@@ -1,9 +1,10 @@
 # Playwright E2E/UI Tests (Java)
 
-This module now has two Playwright layers:
-- `UiMockedFlowTest`: UI microservice-level tests with browser-level mocks for
-  `/api/countries` and `/api/queries*` (fast CI gate).
+This module contains platform-level Playwright only:
 - `CountriesE2ETest`: real end-to-end flow (no mocks) against full Compose stack.
+
+UI-mocked Playwright tests are owned by the frontend microservice under:
+- `microservices/frontend/src/test/java/com/example/frontend/component/playwright`
 
 ## Install Playwright browsers
 
@@ -15,12 +16,6 @@ mvn -q -f tests/e2e-java/pom.xml exec:java -Dexec.args="install"
 
 ```
 mvn -q -f tests/e2e-java/pom.xml test
-```
-
-## Run only mocked UI tests
-
-```
-mvn -q -f tests/e2e-java/pom.xml -Dtest=UiMockedFlowTest test
 ```
 
 ## Run only real end-to-end tests

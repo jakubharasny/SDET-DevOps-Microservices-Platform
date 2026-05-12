@@ -385,6 +385,9 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - Frontend async demo switched to real `POST /api/queries` + polling `GET /api/queries/{id}`
 - Phase 1 extended to include Kafka async flow before Phase 2 CI work
 - Frontend calls API to render EU country currencies
+- Playwright coverage split by ownership:
+  - UI-mocked Playwright flow tests live with frontend microservice
+  - full no-mock platform E2E stays in `tests/e2e-java`
 
 
 11) How to use this document
