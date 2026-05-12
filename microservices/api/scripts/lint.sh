@@ -6,7 +6,12 @@ service_dir="$(cd "$script_dir/.." && pwd)"
 
 (
   cd "$service_dir"
-  mvn -q spotless:check
+  if ! mvn -q spotless:check; then
+    echo "Spotless violations detected in api. Applying automatic formatting..."
+    mvn -q spotless:apply
+    echo "Formatting applied in api. Commit the updated files, then push again."
+    exit 1
+  fi
   mvn -q test
 )
 

@@ -257,6 +257,7 @@ Provider workflow:
 6.1 Build pipeline per service
 Triggered by changes in microservices/<service>/**
 - compile + unit test
+- formatting/lint gate (Spotless check)
 - build Docker image
 - publish image to GHCR (main branch)
 - publish contract artifacts (where relevant)
@@ -272,7 +273,18 @@ Triggered on PR open/update:
 Triggered on PR close:
 - destroy namespace
 
-6.3 Post-merge Promotion and Rollback (target policy)
+6.3 Formatting gate policy (Spotless)
+- Spotless is a required quality gate for Java services.
+- If `spotless:check` fails, run `spotless:apply` in the affected module and re-run checks.
+- Do not push PR updates with known Spotless violations; fix formatting first.
+
+6.4 Local pre-push gate scope (Phase 1)
+- Root pre-push hook must run service hooks for `api`, `frontend`, and `kafka-consumer`.
+- Each service hook must run `mvn test` so unit/component/integration test suites are validated before push.
+- If Spotless auto-applies formatting, push must stop so formatting changes can be committed intentionally.
+- Playwright E2E is not part of pre-push gate; run separately as an explicit local/CI stage.
+
+6.5 Post-merge Promotion and Rollback (target policy)
 - After merge to main:
   - build immutable artifacts/images once
   - deploy to staging/demo environment (prod-like runtime preferred over Compose)

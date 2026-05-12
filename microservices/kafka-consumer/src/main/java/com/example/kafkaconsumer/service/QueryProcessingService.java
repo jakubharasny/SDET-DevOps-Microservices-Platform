@@ -22,19 +22,18 @@ public class QueryProcessingService implements QueryEventProcessor {
 	@Override
 	public void process(QueryCreatedEvent event) {
 		Instant now = Instant.now();
-		// First transition to PROCESSING so UI polling can reflect worker pickup quickly.
+		// First transition to PROCESSING so UI polling can reflect worker pickup
+		// quickly.
 		queryProcessingRepository.markProcessing(event.id(), now);
 		try {
 			// Intentional delay: makes async behavior visible during demo/polling.
 			Thread.sleep(delayMs);
 			String resultText = "Processed by Kafka worker: " + event.message().toUpperCase(Locale.ROOT);
 			queryProcessingRepository.markDone(event.id(), resultText, Instant.now());
-		}
-		catch (InterruptedException ex) {
+		} catch (InterruptedException ex) {
 			Thread.currentThread().interrupt();
 			queryProcessingRepository.markFailed(event.id(), "worker interrupted", Instant.now());
-		}
-		catch (RuntimeException ex) {
+		} catch (RuntimeException ex) {
 			queryProcessingRepository.markFailed(event.id(), ex.getMessage(), Instant.now());
 		}
 	}
