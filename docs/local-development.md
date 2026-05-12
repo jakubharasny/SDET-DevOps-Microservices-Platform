@@ -63,9 +63,10 @@ mvn -q -f tests/e2e-java/pom.xml test
 Playwright is split into two practical lanes:
 - `microservices/frontend` owns UI-mocked Playwright checks at
   `src/test/java/com/example/frontend/component/playwright` (browser-level mocks
-  for `/api/countries` and `/api/queries*`).
-- `tests/e2e-java` keeps real full-stack validation (`CountriesE2ETest`) against
-  Compose (no mocks).
+  for `/api/countries` and `/api/queries*`) and is organized with `config`,
+  `core`, `pages`, `support`, and `tests` packages.
+- `tests/e2e-java` keeps real full-stack validation against Compose (no mocks)
+  and follows the same package pattern (`config`, `core`, `pages`, `tests`).
 
 Note: frontend Playwright tests are opt-in and run when `RUN_PLAYWRIGHT_UI=true`
 is set, so standard `mvn test` for frontend is not forced to require a running
