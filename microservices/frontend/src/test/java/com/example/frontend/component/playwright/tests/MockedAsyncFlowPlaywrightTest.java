@@ -20,6 +20,7 @@ class MockedAsyncFlowPlaywrightTest extends FrontendUiPlaywrightBaseTest {
 		assertThat(page.locator("#kafka-timeline")).containsText("API accepted job query-123");
 		assertThat(page.locator("#kafka-timeline")).containsText("Poll 1: status=PROCESSING");
 		assertThat(page.locator("#kafka-timeline")).containsText("Poll 2: status=DONE");
-		assertThat(page.locator("#kafka-timeline")).containsText("Worker finished. Result: processed: hello from playwright");
+		assertThat(page.locator("#kafka-timeline"))
+				.containsText("Worker finished. Result: processed: hello from playwright");
 	}
 }

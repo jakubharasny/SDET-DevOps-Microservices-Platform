@@ -23,8 +23,7 @@ public abstract class FrontendUiPlaywrightBaseTest {
 	@BeforeEach
 	void setUpBrowser() {
 		config = FrontendUiPlaywrightConfig.fromEnvironment();
-		assumeTrue(config.runPlaywrightUi(),
-				"Set RUN_PLAYWRIGHT_UI=true to execute frontend Playwright mocked tests.");
+		assumeTrue(config.runPlaywrightUi(), "Set RUN_PLAYWRIGHT_UI=true to execute frontend Playwright mocked tests.");
 
 		playwright = Playwright.create();
 		browser = playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(config.headless()));

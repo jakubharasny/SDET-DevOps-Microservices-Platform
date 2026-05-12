@@ -7,7 +7,8 @@ public final class FrontendUiPlaywrightConfig {
 	private final int assertionTimeoutMs;
 	private final boolean runPlaywrightUi;
 
-	private FrontendUiPlaywrightConfig(String baseUrl, boolean headless, int assertionTimeoutMs, boolean runPlaywrightUi) {
+	private FrontendUiPlaywrightConfig(String baseUrl, boolean headless, int assertionTimeoutMs,
+			boolean runPlaywrightUi) {
 		this.baseUrl = baseUrl;
 		this.headless = headless;
 		this.assertionTimeoutMs = assertionTimeoutMs;
