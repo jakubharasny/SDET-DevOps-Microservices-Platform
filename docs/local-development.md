@@ -67,6 +67,10 @@ Playwright is split into two practical lanes:
 - `tests/e2e-java` keeps real full-stack validation (`CountriesE2ETest`) against
   Compose (no mocks).
 
+Note: frontend Playwright tests are opt-in and run when `RUN_PLAYWRIGHT_UI=true`
+is set, so standard `mvn test` for frontend is not forced to require a running
+UI endpoint on `:8080`.
+
 ## Local MySQL for SQL practice
 See `docs/local-database.md`.
 

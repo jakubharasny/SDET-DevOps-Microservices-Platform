@@ -23,7 +23,7 @@ mvn -q exec:java -Dexec.mainClass=com.microsoft.playwright.CLI -Dexec.args="inst
 
 Run only Playwright mocked UI tests:
 ```
-mvn -q -Dtest=UiMockedFlowPlaywrightTest test
+RUN_PLAYWRIGHT_UI=true mvn -q -Dtest=UiMockedFlowPlaywrightTest test
 ```
 
 ## Notes

@@ -8,11 +8,13 @@ import com.microsoft.playwright.Route;
 import org.junit.jupiter.api.Test;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class UiMockedFlowPlaywrightTest {
 
 	@Test
 	void loadsCountriesFromMockedApiAndRendersCards() {
+		requirePlaywrightUiFlag();
 		String baseUrl = System.getenv().getOrDefault("E2E_BASE_URL", "http://localhost:8080");
 
 		try (Playwright playwright = Playwright.create()) {
@@ -39,6 +41,7 @@ class UiMockedFlowPlaywrightTest {
 
 	@Test
 	void runsAsyncFlowWithMockedApiAndShowsDoneResult() {
+		requirePlaywrightUiFlag();
 		String baseUrl = System.getenv().getOrDefault("E2E_BASE_URL", "http://localhost:8080");
 
 		try (Playwright playwright = Playwright.create()) {
@@ -84,5 +87,10 @@ class UiMockedFlowPlaywrightTest {
 
 	private Route.FulfillOptions jsonResponse(String body) {
 		return new Route.FulfillOptions().setStatus(200).setContentType("application/json").setBody(body);
+	}
+
+	private void requirePlaywrightUiFlag() {
+		boolean enabled = Boolean.parseBoolean(System.getenv().getOrDefault("RUN_PLAYWRIGHT_UI", "false"));
+		assumeTrue(enabled, "Set RUN_PLAYWRIGHT_UI=true to execute Playwright UI mocked tests.");
 	}
 }
