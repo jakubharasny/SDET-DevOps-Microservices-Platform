@@ -69,6 +69,10 @@ for `api`, `frontend`, and `kafka-consumer`.
 They run Spotless checks and tests for each service. If Spotless fails, the hook
 auto-applies formatting and stops the push so you can commit the formatting
 changes before retrying.
+`mvn test` in each service includes your current unit/component/integration tests
+under `src/test/java` (all `*Test` classes).
+Playwright E2E is intentionally separate from pre-push and should be run as an
+explicit step.
 Enable it once per clone:
 
 ```

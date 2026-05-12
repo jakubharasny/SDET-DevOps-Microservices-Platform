@@ -260,6 +260,12 @@ Triggered on PR close:
 - If `spotless:check` fails, run `spotless:apply` in the affected module and re-run checks.
 - Do not push PR updates with known Spotless violations; fix formatting first.
 
+6.4 Local pre-push gate scope (Phase 1)
+- Root pre-push hook must run service hooks for `api`, `frontend`, and `kafka-consumer`.
+- Each service hook must run `mvn test` so unit/component/integration test suites are validated before push.
+- If Spotless auto-applies formatting, push must stop so formatting changes can be committed intentionally.
+- Playwright E2E is not part of pre-push gate; run separately as an explicit local/CI stage.
+
 
 7) Tech Stack
 
