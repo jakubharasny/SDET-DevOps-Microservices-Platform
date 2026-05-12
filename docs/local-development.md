@@ -64,8 +64,11 @@ mvn -q -f tests/e2e-java/pom.xml test
 See `docs/local-database.md`.
 
 ## Git hooks (lint before push)
-Hooks live inside each microservice and are triggered by a root pre-push hook.
-They auto-format OpenAPI output and run fast local tests for each service.
+Hooks live inside each microservice and are triggered by a root pre-push hook
+for `api`, `frontend`, and `kafka-consumer`.
+They run Spotless checks and tests for each service. If Spotless fails, the hook
+auto-applies formatting and stops the push so you can commit the formatting
+changes before retrying.
 Enable it once per clone:
 
 ```
