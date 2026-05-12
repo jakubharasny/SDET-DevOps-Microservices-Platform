@@ -6,6 +6,7 @@ service_dir="$(cd "$script_dir/.." && pwd)"
 
 (
   cd "$service_dir"
+  mvn -q -DskipTests compile
   if ! mvn -q spotless:check; then
     echo "Spotless violations detected in frontend. Applying automatic formatting..."
     mvn -q spotless:apply

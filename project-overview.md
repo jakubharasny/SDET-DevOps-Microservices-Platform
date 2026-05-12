@@ -388,6 +388,10 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - Playwright coverage split by ownership:
   - UI-mocked Playwright flow tests live with frontend microservice
   - full no-mock platform E2E stays in `tests/e2e-java`
+- Local quality gates hardened:
+  - service lint hooks now compile with `-DskipTests` before Spotless/tests
+  - Maven compiler is configured to fail build on warnings (`-Xlint:unchecked`)
+  - null-safety drift is blocked earlier in local and CI-style runs
 
 
 11) How to use this document
