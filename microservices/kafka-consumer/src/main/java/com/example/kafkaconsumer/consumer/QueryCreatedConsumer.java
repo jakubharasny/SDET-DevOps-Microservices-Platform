@@ -28,8 +28,7 @@ public class QueryCreatedConsumer {
 			QueryCreatedEvent event = objectMapper.readValue(payload, QueryCreatedEvent.class);
 			// Processing and DB status transitions are delegated to a separate service.
 			queryEventProcessor.process(event);
-		}
-		catch (JsonProcessingException ex) {
+		} catch (JsonProcessingException ex) {
 			log.error("Failed to parse query-created event: {}", payload, ex);
 		}
 	}
