@@ -53,7 +53,7 @@ class UiMockedFlowPlaywrightTest {
 				route.fallback();
 			});
 
-			final int[] pollCount = { 0 };
+			final int[] pollCount = {0};
 			page.route("**/api/queries/query-123", route -> {
 				pollCount[0]++;
 				if (pollCount[0] < 2) {
@@ -76,7 +76,8 @@ class UiMockedFlowPlaywrightTest {
 			assertThat(page.locator("#kafka-timeline")).containsText("API accepted job query-123");
 			assertThat(page.locator("#kafka-timeline")).containsText("Poll 1: status=PROCESSING");
 			assertThat(page.locator("#kafka-timeline")).containsText("Poll 2: status=DONE");
-			assertThat(page.locator("#kafka-timeline")).containsText("Worker finished. Result: processed: hello from playwright");
+			assertThat(page.locator("#kafka-timeline"))
+					.containsText("Worker finished. Result: processed: hello from playwright");
 			browser.close();
 		}
 	}
