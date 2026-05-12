@@ -233,6 +233,24 @@ Provider workflow:
 - verification results published back
 - PR gating prevents breaking changes
 
+5.5 Test Gates by Environment (target policy)
+- PR CI (fast gate, per service):
+  - run unit tests
+  - run service-level component/integration tests (including embedded dependency tests where useful)
+  - run contract checks relevant to changed services
+  - avoid heavy full-platform E2E in this gate by default
+- Preview environment (PR namespace):
+  - deploy changed services plus required dependencies
+  - run smoke checks and targeted cross-service flows
+  - keep feedback quick enough for iterative PR review
+- Staging (prod-like validation gate):
+  - deploy full system in runtime close to production
+  - run broader E2E suite (Playwright + key integration flows)
+  - run release readiness checks before promotion
+- Production:
+  - do not run large test suites after deploy
+  - rely on health checks, synthetic checks, monitoring, and rollback policies
+
 
 6) CI/CD Workflow (target state)
 
@@ -253,6 +271,19 @@ Triggered on PR open/update:
 - comment PR with preview URL
 Triggered on PR close:
 - destroy namespace
+
+6.3 Post-merge Promotion and Rollback (target policy)
+- After merge to main:
+  - build immutable artifacts/images once
+  - deploy to staging/demo environment (prod-like runtime preferred over Compose)
+  - execute staging smoke + E2E verification gates
+- If staging checks fail:
+  - mark deployment as failed and block promotion
+  - prefer automatic rollback or non-promotion over manual firefighting
+- Production promotion:
+  - require explicit gate (manual approval or policy gate)
+  - prefer progressive rollout patterns (canary/blue-green where possible)
+  - rollback should be scriptable/automated based on health criteria
 
 
 7) Tech Stack
