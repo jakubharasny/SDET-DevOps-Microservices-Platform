@@ -266,6 +266,19 @@ Triggered on PR close:
 - If Spotless auto-applies formatting, push must stop so formatting changes can be committed intentionally.
 - Playwright E2E is not part of pre-push gate; run separately as an explicit local/CI stage.
 
+6.5 Post-merge Promotion and Rollback (target policy)
+- After merge to main:
+  - build immutable artifacts/images once
+  - deploy to staging/demo environment (prod-like runtime preferred over Compose)
+  - execute staging smoke + E2E verification gates
+- If staging checks fail:
+  - mark deployment as failed and block promotion
+  - prefer automatic rollback or non-promotion over manual firefighting
+- Production promotion:
+  - require explicit gate (manual approval or policy gate)
+  - prefer progressive rollout patterns (canary/blue-green where possible)
+  - rollback should be scriptable/automated based on health criteria
+
 
 7) Tech Stack
 
