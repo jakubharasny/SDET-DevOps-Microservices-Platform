@@ -2,9 +2,10 @@
 
 ## Prerequisites
 
-- Java 17+
+- Java 17 (service target; Dockerfiles use Temurin 17). Newer JDKs often work for local `mvn test`.
 - Maven
 - Docker (for Compose runs)
+- `jq` + `curl` (for `scripts/phase1-smoke.sh`)
 
 ## Run the frontend locally (no Docker)
 
@@ -17,12 +18,20 @@ mvn spring-boot:run
 
 Then open `http://localhost:8080`.
 
-## Run via Docker Compose (Phase 1 target)
+## Run via Docker Compose (Phase 1)
 
 From the repo root:
 
 ```
 docker compose -f deploy/compose/docker-compose.yml up --build
+```
+
+If a host MySQL already owns port 3306 (common with Homebrew):
+
+```
+brew services stop mysql
+# or keep it and remap:
+MYSQL_HOST_PORT=3307 docker compose -f deploy/compose/docker-compose.yml up --build
 ```
 
 Endpoints:
@@ -32,6 +41,14 @@ Endpoints:
 - API countries: `http://localhost:8081/api/countries`
 - Async create query: `POST http://localhost:8081/api/queries`
 - Async query status: `GET http://localhost:8081/api/queries/{id}`
+
+`API_BASE_URL` in Compose is the **browser** fetch target (`http://localhost:8081`). That is intentional.
+
+Phase 1 smoke (health + countries + Kafka async → `DONE`):
+
+```
+./scripts/phase1-smoke.sh
+```
 
 Note: the Compose setup expects a `Dockerfile` in `microservices/frontend`, `microservices/api`, and `microservices/kafka-consumer`.
 

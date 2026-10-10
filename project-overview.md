@@ -59,10 +59,12 @@ Folder structure constraints (important)
 
 This section defines the current project phase and completed milestones. Cursor agents must use it to decide whether a request is in-scope for the current phase. If a request belongs to a later phase, the agent must warn and request an override.
 
-Current Phase: Phase 1 — Local Development (Docker Compose + Kafka async flow)
+Current Phase: Phase 2 — CI Foundation (GitHub Actions + GHCR)
+
+Phase 1 status: COMPLETE (local Compose + Kafka async flow verified)
 
 
-Phase 1 — Local Development (Docker Compose)
+Phase 1 — Local Development (Docker Compose) — DONE
 
 Goal: Local multi-service environment running reliably with basic testing, including one real async Kafka flow.
 
@@ -76,6 +78,7 @@ Goal: Local multi-service environment running reliably with basic testing, inclu
 - [x] Async query API endpoints added (`POST /api/queries`, `GET /api/queries/{id}`)
 - [x] Kafka broker + worker integrated in local Compose stack
 - [x] Frontend async demo uses real API/Kafka flow (no fake timeline-only simulation)
+- [x] Phase 1 smoke script (`scripts/phase1-smoke.sh`) covers health + countries + async Kafka → DONE
 
 Exit criteria for Phase 1:
 - Docker Compose can run multiple services locally
@@ -88,8 +91,9 @@ Phase 2 — CI Foundation (GitHub Actions + GHCR)
 
 Goal: Every service has CI build/test and produces versioned container images.
 
-- [ ] GitHub repository created and initial push completed
+- [x] GitHub repository created and initial push completed
 - [ ] GitHub Actions pipeline created for frontend service
+- [ ] GitHub Actions pipelines for api + kafka-consumer (path-filtered, same pattern)
 - [ ] CI builds and runs unit tests on PRs
 - [ ] CI builds Docker image and publishes to GHCR on merge/main
 - [ ] CI triggers only relevant service pipelines (path-based filtering)
@@ -334,17 +338,21 @@ Editor:
 We will add folders when needed (phase-by-phase).
 Do not create the entire target tree upfront.
 
-Current focus (Phase 1):
+Current focus (Phase 2):
+- `.github/workflows` per service (build/test + GHCR publish)
+- path filters under `microservices/<service>/**`
+- keep Phase 1 Compose stack as the local baseline
+
+Already present from Phase 1:
 - microservices/frontend
 - microservices/api
 - microservices/kafka-consumer
-- project-overview.md
-- .cursorrules
-
-Phase 1 additions (only when needed):
-- deploy/compose (Docker Compose files)
-- deploy/mysql (local MySQL schema + seed)
-- docs/ (local development docs, e.g. docs/local-development.md)
+- deploy/compose
+- deploy/mysql
+- docs/
+- scripts/phase1-smoke.sh
+- tests/e2e-java
+- .githooks + per-service Spotless/test pre-push hooks
 
 
 9) Current Structure (as of now)
@@ -361,41 +369,30 @@ This reflects the reality of the repo/project today, not the ideal future state.
 - docs/
   - local-development.md
   - local-database.md
+  - openapi/
+- scripts/
+  - phase1-smoke.sh
+- tests/
+  - e2e-java/
+- .githooks/
+- .github/ (CODEOWNERS only until Phase 2 workflows land)
 - project-overview.md
 - .cursorrules
 
 
 10) Latest Progress
 
-- Initial monorepo structure created
-- Frontend microservice created:
-  - Spring Boot + Thymeleaf UI
-  - Runs locally via mvn spring-boot:run
-- API microservice created:
-  - Spring Boot REST
-  - /api/ping endpoint
-- Countries API added (/api/countries) backed by JSON catalog
-- Docker Compose runs multiple services locally
-- Frontend health endpoint available at /actuator/health
-- Basic smoke test added for frontend health
-- Frontend renders countries table from API data
-- OpenAPI schema generated during API tests (docs/openapi/api.json)
-- Test layout split into unit/component/integration folders
-- Playwright E2E test added (tests/e2e-java)
-- Local MySQL for SQL practice (schema + seed)
-- Kafka worker microservice added for async query processing
-- Frontend async demo switched to real `POST /api/queries` + polling `GET /api/queries/{id}`
-- Phase 1 extended to include Kafka async flow before Phase 2 CI work
-- Frontend calls API to render EU country currencies
-- Playwright coverage split by ownership:
-  - UI-mocked Playwright flow tests live with frontend microservice
-  - full no-mock platform E2E stays in `tests/e2e-java`
-- Local quality gates hardened:
-  - service lint hooks now compile with `-DskipTests` before Spotless/tests
-  - Maven compiler is configured to fail build on warnings (`-Xlint:unchecked`)
-  - null-safety drift is blocked earlier in local and CI-style runs
-- Sonar adoption planned:
-  - Phase 2 will include a dedicated PR to wire Sonar quality analysis and gate policy
+- Phase 1 COMPLETE: Compose stack (frontend + api + kafka + kafka-consumer + mysql)
+- Real async query flow: `POST /api/queries` → Kafka `query.created.v1` → worker → poll until `DONE`
+- Service tests green locally (`api`, `frontend`, `kafka-consumer`) including Spotless
+- Playwright split:
+  - mocked UI flows owned by `microservices/frontend` (opt-in via `RUN_PLAYWRIGHT_UI=true`)
+  - real platform E2E in `tests/e2e-java` (Compose required)
+- Local quality gates: root + per-service pre-push (compile, Spotless, `mvn test`)
+- OpenAPI schema generated during API tests (`docs/openapi/api.json`)
+- Phase 1 smoke script added for repeatable stack verification
+- GitHub repo exists; Phase 2 CI workflows not yet implemented
+- Sonar quality gate remains a planned Phase 2 deliverable
 
 
 11) How to use this document

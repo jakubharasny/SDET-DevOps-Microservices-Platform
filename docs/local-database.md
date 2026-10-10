@@ -8,9 +8,16 @@ This database is for local development and SQL practice. The API service now use
 docker compose -f deploy/compose/docker-compose.yml up -d mysql
 ```
 
+If Homebrew (or another) MySQL already listens on 3306, stop it first or remap:
+
+```
+brew services stop mysql
+# or: MYSQL_HOST_PORT=3307 docker compose -f deploy/compose/docker-compose.yml up -d mysql
+```
+
 Connection details:
 - Host: `127.0.0.1`
-- Port: `3306`
+- Port: `3306` (or `MYSQL_HOST_PORT` if remapped)
 - Database: `sdet_dev`
 - User: `sdet`
 - Password: `sdetpass`
