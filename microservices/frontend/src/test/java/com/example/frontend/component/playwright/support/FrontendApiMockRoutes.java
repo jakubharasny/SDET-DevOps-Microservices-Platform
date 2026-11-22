@@ -43,6 +43,43 @@ public class FrontendApiMockRoutes {
 		});
 	}
 
+	public static void mockAsyncQueryFailedFlow(Page page) {
+		page.route("**/api/queries", route -> {
+			if ("POST".equalsIgnoreCase(route.request().method())) {
+				route.fulfill(jsonResponse("{\"id\":\"query-fail-1\",\"status\":\"PENDING\"}"));
+				return;
+			}
+			route.fallback();
+		});
+
+		final int[] pollCount = {0};
+		page.route("**/api/queries/query-fail-1", route -> {
+			pollCount[0]++;
+			if (pollCount[0] < 2) {
+				route.fulfill(jsonResponse("{\"id\":\"query-fail-1\",\"status\":\"PROCESSING\"}"));
+				return;
+			}
+			route.fulfill(jsonResponse("""
+					{
+					  "id":"query-fail-1",
+					  "status":"FAILED",
+					  "error":"downstream risk check timeout"
+					}
+					"""));
+		});
+	}
+
+	public static void mockAsyncQueryCreateServerError(Page page) {
+		page.route("**/api/queries", route -> {
+			if ("POST".equalsIgnoreCase(route.request().method())) {
+				route.fulfill(new Route.FulfillOptions().setStatus(500).setContentType("application/json")
+						.setBody("{\"error\":\"Internal Server Error\"}"));
+				return;
+			}
+			route.fallback();
+		});
+	}
+
 	private static Route.FulfillOptions jsonResponse(String body) {
 		return new Route.FulfillOptions().setStatus(200).setContentType("application/json").setBody(body);
 	}

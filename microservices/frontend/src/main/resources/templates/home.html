@@ -149,6 +149,40 @@
                 </ol>
             </section>
         </section>
+
+        <section class="quality-section" id="quality-gates" aria-label="Testing ladder and quality gates">
+            <div class="quality-header">
+                <div>
+                    <p class="badge">QA Architecture</p>
+                    <h2>Testing Ladder &amp; Quality Gates</h2>
+                    <p class="quality-subtitle">
+                        Fast deterministic checks at every layer — designed for distributed sync and async microservices.
+                    </p>
+                </div>
+            </div>
+            <div class="quality-grid">
+                <article class="quality-card">
+                    <span class="chip chip-green">Active · Pre-Push</span>
+                    <h3>1. Unit &amp; Code Gate</h3>
+                    <p>Fast JUnit 5 service tests paired with Spotless formatting gates across <code>api</code>, <code>frontend</code>, and <code>kafka-consumer</code>.</p>
+                </article>
+                <article class="quality-card">
+                    <span class="chip chip-cyan">Active · Component</span>
+                    <h3>2. API &amp; UI Component</h3>
+                    <p>MockMvc, RestAssured HTTP verification, generated OpenAPI spec checks, and mocked Playwright UI flows.</p>
+                </article>
+                <article class="quality-card">
+                    <span class="chip chip-blue">Active · Integration</span>
+                    <h3>3. Async &amp; Broker</h3>
+                    <p>Embedded Kafka publisher/consumer round-trip tests plus repeatable full-stack smoke validation (<code>phase1-smoke.sh</code>).</p>
+                </article>
+                <article class="quality-card">
+                    <span class="chip chip-violet">E2E Live · Phase 2–4</span>
+                    <h3>4. E2E &amp; Delivery Gates</h3>
+                    <p>Playwright Java full-stack E2E active today; GitHub Actions, K8s/Helm, WireMock &amp; PactFlow contract gates next.</p>
+                </article>
+            </div>
+        </section>
     </main>
 
 <script>

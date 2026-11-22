@@ -2,7 +2,7 @@
 
 Portfolio monorepo: small microservices system + realistic DevOps/SDET delivery platform around it.
 
-**Current status:** Phase 1 complete (local Compose + Kafka async flow). Next: Phase 2 (GitHub Actions CI + GHCR).
+**Current status:** Phase 1 complete (local Compose + Kafka async flow); Phase 2 core CI live (path-filtered GitHub Actions + GHCR publish per service). Next: Sonar quality gate & Phase 3 (local Kubernetes).
 
 Repo: https://github.com/jakubharasny/SDET-DevOps-Microservices-Platform
 

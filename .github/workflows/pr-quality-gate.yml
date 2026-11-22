@@ -1,0 +1,72 @@
+name: PR Quality Gate
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Spotless check (all services)
+        run: |
+          mvn -B -f microservices/api/pom.xml spotless:check
+          mvn -B -f microservices/frontend/pom.xml spotless:check
+          mvn -B -f microservices/kafka-consumer/pom.xml spotless:check
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Compile main and test sources (all services)
+        run: |
+          mvn -B -f microservices/api/pom.xml test-compile
+          mvn -B -f microservices/frontend/pom.xml test-compile
+          mvn -B -f microservices/kafka-consumer/pom.xml test-compile
+
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Run unit, component, and Embedded Kafka tests (all services)
+        run: |
+          mvn -B -f microservices/api/pom.xml test
+          mvn -B -f microservices/frontend/pom.xml test
+          mvn -B -f microservices/kafka-consumer/pom.xml test

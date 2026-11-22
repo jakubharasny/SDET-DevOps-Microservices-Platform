@@ -23,6 +23,7 @@ class HomePageMockMvcTest {
 		mockMvc.perform(get("/")).andExpect(status().isOk())
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("Load countries from API service")))
 				.andExpect(content().string(org.hamcrest.Matchers.containsString("kafka-timeline")))
-				.andExpect(content().string(org.hamcrest.Matchers.containsString("Run async Kafka flow")));
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("Run async Kafka flow")))
+				.andExpect(content().string(org.hamcrest.Matchers.containsString("Testing Ladder")));
 	}
 }

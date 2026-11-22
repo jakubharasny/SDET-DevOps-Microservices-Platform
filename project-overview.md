@@ -92,11 +92,11 @@ Phase 2 — CI Foundation (GitHub Actions + GHCR)
 Goal: Every service has CI build/test and produces versioned container images.
 
 - [x] GitHub repository created and initial push completed
-- [ ] GitHub Actions pipeline created for frontend service
-- [ ] GitHub Actions pipelines for api + kafka-consumer (path-filtered, same pattern)
-- [ ] CI builds and runs unit tests on PRs
-- [ ] CI builds Docker image and publishes to GHCR on merge/main
-- [ ] CI triggers only relevant service pipelines (path-based filtering)
+- [x] GitHub Actions pipeline created for frontend service (`.github/workflows/ci-frontend.yml`)
+- [x] GitHub Actions pipelines for api + kafka-consumer (`.github/workflows/ci-api.yml`, `.github/workflows/ci-kafka-consumer.yml`, path-filtered)
+- [x] CI builds and runs Spotless + unit/component/integration tests on PRs and pushes to main
+- [x] CI builds Docker image and publishes to GHCR on merge/main
+- [x] CI triggers only relevant service pipelines (path-based filtering)
 - [ ] Optional: vulnerability scan or dependency check included
 - [ ] Sonar quality analysis setup PR created (SonarCloud/SonarQube) with new-code quality gate
 
