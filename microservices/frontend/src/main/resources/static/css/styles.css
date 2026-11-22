@@ -55,7 +55,8 @@ body {
 .hero,
 .status-panel,
 .service-card,
-.demo-card {
+.demo-card,
+.quality-section {
     background: linear-gradient(160deg, rgba(24, 42, 72, 0.8), rgba(20, 34, 57, 0.78));
     border: 1px solid rgba(140, 178, 236, 0.26);
     border-radius: 18px;
@@ -493,6 +494,57 @@ button:focus-visible,
     display: none;
 }
 
+.quality-section {
+    margin-top: 1rem;
+    padding: 1.15rem;
+    animation: rise 700ms ease;
+}
+
+.quality-header h2 {
+    margin: 0.2rem 0 0;
+    font-size: 1.25rem;
+}
+
+.quality-subtitle {
+    margin: 0.45rem 0 0;
+    color: #bad4ff;
+    font-size: 0.93rem;
+    line-height: 1.45;
+}
+
+.quality-grid {
+    margin-top: 0.95rem;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+.quality-card {
+    padding: 0.85rem;
+    border-radius: 13px;
+    border: 1px solid rgba(130, 172, 235, 0.28);
+    background: rgba(14, 28, 52, 0.76);
+}
+
+.quality-card h3 {
+    margin: 0.55rem 0 0;
+    font-size: 0.98rem;
+    color: #edf5ff;
+}
+
+.quality-card p {
+    margin: 0.42rem 0 0;
+    font-size: 0.86rem;
+    line-height: 1.44;
+    color: #c1d8fc;
+}
+
+.quality-card code {
+    font-family: "JetBrains Mono", "Consolas", monospace;
+    font-size: 0.79rem;
+    color: #93f0ff;
+}
+
 @media (max-width: 960px) {
     .hero {
         grid-template-columns: 1fr;
@@ -509,6 +561,10 @@ button:focus-visible,
     .demo-grid {
         grid-template-columns: 1fr;
     }
+
+    .quality-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
 }
 
 @media (max-width: 600px) {
@@ -518,11 +574,13 @@ button:focus-visible,
 
     .hero,
     .service-card,
-    .demo-card {
+    .demo-card,
+    .quality-section {
         padding: 0.9rem;
     }
 
-    .country-grid {
+    .country-grid,
+    .quality-grid {
         grid-template-columns: 1fr;
     }
 }
